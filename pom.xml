@@ -48,6 +48,28 @@
 			    </exclusion>
 	        </exclusions>
 	    </dependency>
+	    <dependency>
+			<groupId>eu.freme</groupId>
+			<artifactId>Broker</artifactId>
+			<version>0.4-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>eu.freme</groupId>
+			<artifactId>common</artifactId>
+			<version>0.4-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
   </dependencies>
   <build>
         <pluginManagement>
