@@ -19,15 +19,12 @@ public class NIFCommons {
 	@Autowired
 	static RDFConversionService rdfConversionService;
 
-	public static String plainText2NIF(NIFParameterSet nifParameters, String language){
-		
-		String nifString = null;
+	public static String extractIsStringFromNIF(NIFParameterSet nifParameters, String language){
 		
 		Model inModel = ModelFactory.createDefaultModel();
-        Model outModel = ModelFactory.createDefaultModel();
-
+        
         String textForProcessing = null;
-
+        System.out.println("DEBUGGING nifParams:" + nifParameters.getInput());
         if (nifParameters.getInformat().equals(RDFConstants.RDFSerialization.PLAINTEXT)) {
             // input is sent as value of the input parameter
             textForProcessing = nifParameters.getInput();
@@ -56,7 +53,6 @@ public class NIFCommons {
                 if (isStringStm != null) {
                     textForProcessing = isStringStm.getObject().asLiteral().getString();
                     textFound = true;
-                    nifString = textForProcessing;
                 }
             }
 
@@ -65,7 +61,7 @@ public class NIFCommons {
             }
         }
         
-        return nifString;
+        return textForProcessing;
 		
 	}
 	
