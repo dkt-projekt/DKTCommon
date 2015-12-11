@@ -6,10 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -72,6 +70,36 @@ public class NIFReader {
 		}
 		throw new eu.freme.broker.exception.BadRequestException("No context/document found.");
 	}
+
+	public static String extractDocumentPath(Model nifModel){
+		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
+      
+		while(iter.hasNext()){
+			Resource contextRes = iter.nextStatement().getSubject();
+			Statement st = contextRes.getProperty(DFKINIF.DocumentPath);
+			if(st!=null){
+	//			System.out.println(contextRes.getURI());
+				String uri = st.getObject().asResource().getURI();
+				return uri;
+			}
+		}
+		throw new eu.freme.broker.exception.BadRequestException("No document path found found.");
+	}
+
+	public static String extractDocumentNIFPath(Model nifModel){
+		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
+      
+		while(iter.hasNext()){
+			Resource contextRes = iter.nextStatement().getSubject();
+			Statement st = contextRes.getProperty(DFKINIF.DocumentPath);
+			if(st!=null){
+	//			System.out.println(contextRes.getURI());
+				String uri = st.getObject().asResource().getURI();
+				return uri;
+			}
+		}
+		throw new eu.freme.broker.exception.BadRequestException("No document path found found.");
+	}
 	
 	public static List<String[]> extractEntities(Model nifModel){
 		List<String[]> list = new LinkedList<String[]>();
@@ -83,7 +111,8 @@ public class NIFReader {
 //            System.out.println("1."+st.getObject().asResource().getURI());
             com.hp.hpl.jena.rdf.model.Statement st2 = r.getProperty(NIF.anchorOf);
 //            System.out.println("7."+st2.getLiteral().getString());
-            String[] information = {st.getObject().asResource().getURI(),st2.getLiteral().getString()};
+            com.hp.hpl.jena.rdf.model.Statement st3 = r.getProperty(ITSRDF.taIdentRef);
+            String[] information = {st3.getObject().asResource().getURI(),st2.getLiteral().getString(),st.getObject().asResource().getURI()};
             list.add(information);
         }
         if(list.isEmpty()){
