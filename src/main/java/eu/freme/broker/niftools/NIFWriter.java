@@ -1,5 +1,8 @@
 package eu.freme.broker.niftools;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -113,5 +116,18 @@ public class NIFWriter {
         outModel.add(documentResource, NIF.endIndex,
                 outModel.createTypedLiteral(endTotalText, XSDDatatype.XSDnonNegativeInteger));
 
+	}
+	
+	public Model initializeOutputModel(){
+		Model model = ModelFactory.createDefaultModel();
+		
+		//TODO Add NIF namespaces and more.
+        Map<String,String> prefixes = new HashMap<String, String>();
+        prefixes.put("xsd", "<http://www.w3.org/2001/XMLSchema#>");
+        prefixes.put("nif", "<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>");
+        prefixes.put("dfkinif", "<http://persistence.dfki.de/nif/ontologies/nif-dfki#>");
+        model.setNsPrefixes(prefixes);
+        
+		return model;
 	}
 }
