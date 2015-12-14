@@ -40,7 +40,6 @@ public class NIF {
     public static final Property referenceContext = property("referenceContext");
     public static final Property topic = property("topic");
     
-    public static final Property entity = property("entity");
     
     
 
