@@ -38,16 +38,32 @@ public class NIFWriter {
 		outModel.add(spanAsResource, RDF.type, NIF.String);
 		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
 		// TODO add language to String
-		outModel.add(spanAsResource, NIF.anchorOf,
-				outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
-		outModel.add(spanAsResource, NIF.beginIndex,
-				outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
         
 	}
 
+	public static void addAnnotationEntity(Model outModel, int startIndex, int endIndex, String text, String taIdentRef, String nerType){
+		String docURI = "http://dkt.dfki.de/examples/"; 
+		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource spanAsResource = outModel.createResource(spanUri);
+		outModel.add(spanAsResource, RDF.type, NIF.String);
+		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+		// TODO add language to String
+		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
+		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+        //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
+        
+	}
+
+	
 	public static void addSpan(Model outModel, Resource documentResource, String inputText, String documentURI,
 			int start2, int end2) {
 		System.out.println("Start/END positions:" + start2 + "-" + end2);
