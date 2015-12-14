@@ -4,9 +4,9 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
-public class NIF {
+public class DFKINIF {
 
-    protected static final String uri = "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#";
+    protected static final String uri = "http://dkt.dfki.de/ontologies/nif#";
 
     /**
      * returns the URI for this schema
@@ -25,22 +25,16 @@ public class NIF {
         return ResourceFactory.createProperty(uri, local);
     }
 
-    public static final Resource Annotation = resource("Annotation");
-    public static final Resource Context = resource("Context");
-    public static final Resource String = resource("String");
-    public static final Resource RFC5147String = resource("RFC5147String");
+    public static final Property DocumentPath = property("DocumentPath");
+    public static final Property DocumentNIFPath = property("DocumentNIFPath");
 
-    public static final Property anchorOf = property("anchorOf");
+    public static final Resource anchorOf = resource("anchorOf");
     public static final Property beginIndex = property("beginIndex");
     public static final Property confidence = property("confidence");
     public static final Property isString = property("isString");
     public static final Property endIndex = property("endIndex");
     public static final Property entity = property("entity");
     public static final Property keyword = property("keyword");
-    public static final Property referenceContext = property("referenceContext");
-    public static final Property topic = property("topic");
-    
-    public static final Property entity = property("entity");
     
     
 
