@@ -6,11 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
+
+import eu.freme.common.conversion.rdf.JenaRDFConversionService;
+import eu.freme.common.conversion.rdf.RDFConstants.RDFSerialization;
+import eu.freme.common.conversion.rdf.RDFConversionService;
 
 //import eu.freme.broker.eopennlp.exceptions.ExternalServiceFailedException;
 
@@ -119,5 +124,15 @@ public class NIFReader {
         	return null;
         }
 		return list;
+	}
+
+	public static Model extractModelFromString(String content) throws Exception {
+		Model outModel = ModelFactory.createDefaultModel();
+		RDFConversionService rdfConversion = new JenaRDFConversionService();
+		outModel = rdfConversion.unserializeRDF(content, RDFSerialization.RDF_XML);
+		if(outModel==null){
+        	return null;
+        }
+		return outModel;
 	}
 }
