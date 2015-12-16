@@ -113,11 +113,14 @@ public class NIFReader {
         while (iterEntities.hasNext()) {
             Resource r = iterEntities.nextResource();
             com.hp.hpl.jena.rdf.model.Statement st = r.getProperty(NIF.entity);
+            String stringSt = ( st!=null ) ? st.getObject().asResource().getURI() : null;
 //            System.out.println("1."+st.getObject().asResource().getURI());
             com.hp.hpl.jena.rdf.model.Statement st2 = r.getProperty(NIF.anchorOf);
+            String stringSt2 = ( st2!=null ) ? st2.getLiteral().getString() : null;
 //            System.out.println("7."+st2.getLiteral().getString());
             com.hp.hpl.jena.rdf.model.Statement st3 = r.getProperty(ITSRDF.taIdentRef);
-            String[] information = {st3.getObject().asResource().getURI(),st2.getLiteral().getString(),st.getObject().asResource().getURI()};
+            String stringSt3 = ( st3!=null ) ? st3.getObject().asResource().getURI() : null;
+            String[] information = {stringSt3,stringSt2,stringSt};
             list.add(information);
         }
         if(list.isEmpty()){

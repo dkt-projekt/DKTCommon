@@ -25,6 +25,11 @@ public class DFKINIF {
         return ResourceFactory.createProperty(uri, local);
     }
 
+    public static final Resource location = resource("location");
+    public static final Resource person = resource("person");
+    public static final Resource organization = resource("organization");
+    public static final Resource date = resource("date");
+
     public static final Property DocumentPath = property("DocumentPath");
     public static final Property DocumentNIFPath = property("DocumentNIFPath");
 

@@ -1,6 +1,7 @@
 package eu.freme.broker.niftools;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
@@ -35,6 +36,7 @@ public class NIFWriter {
 	
 	public static void addAnnotationWithTaIdentRef(Model outModel, int startIndex, int endIndex, String text, String taIdentRef){
 		String docURI = "http://dkt.dfki.de/examples/"; 
+		docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
 		Resource spanAsResource = outModel.createResource(spanUri);
@@ -51,6 +53,7 @@ public class NIFWriter {
 
 	public static void addAnnotationEntity(Model outModel, int startIndex, int endIndex, String text, String taIdentRef, String nerType){
 		String docURI = "http://dkt.dfki.de/examples/"; 
+		docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
 		Resource spanAsResource = outModel.createResource(spanUri);
@@ -61,6 +64,26 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
+		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+        //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
+        
+	}
+
+	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, List<String> list, String nerType){
+		String docURI = "http://dkt.dfki.de/examples/"; 
+		docURI = NIFReader.extractDocumentURI(outModel);
+		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource spanAsResource = outModel.createResource(spanUri);
+		outModel.add(spanAsResource, RDF.type, NIF.String);
+		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+		// TODO add language to String
+		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		for (String taIdentRef : list) {
+			outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
+		}
 		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
         
@@ -125,7 +148,7 @@ public class NIFWriter {
         Map<String,String> prefixes = new HashMap<String, String>();
         prefixes.put("xsd", "<http://www.w3.org/2001/XMLSchema#>");
         prefixes.put("nif", "<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>");
-        prefixes.put("dfkinif", "<http://persistence.dfki.de/nif/ontologies/nif-dfki#>");
+        prefixes.put("dfkinif", "<http://persistence.dfki.de/ontologies/nif#>");
         model.setNsPrefixes(prefixes);
         
 		return model;
