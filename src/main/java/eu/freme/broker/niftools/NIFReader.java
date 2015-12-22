@@ -50,9 +50,10 @@ public class NIFReader {
 		return str;
 	}
 	
-	public static String model2String(Model nifModel) {
+	public static String model2String(Model nifModel/*, String format*/) {
 		
 		StringWriter writer = new StringWriter();
+//		nifModel.write(writer, format);
 		nifModel.write(writer, "RDF/XML");
 		try {
 			writer.close();
