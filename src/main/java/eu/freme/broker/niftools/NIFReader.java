@@ -50,10 +50,10 @@ public class NIFReader {
 		return str;
 	}
 	
-	public static String model2String(Model nifModel) {
+	public static String model2String(Model nifModel, String format) {
 		
 		StringWriter writer = new StringWriter();
-		nifModel.write(writer, "RDF/XML");
+		nifModel.write(writer, format);
 		try {
 			writer.close();
 		} catch (IOException e) {
@@ -63,15 +63,37 @@ public class NIFReader {
 		return writer.toString();
 	}
 
-
+	public static String extractTaIdentRefFromModel(Model nifModel){
+		String ref = null;
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+        while (iterEntities.hasNext()) {
+            Resource r = iterEntities.nextResource();
+            com.hp.hpl.jena.rdf.model.Statement st3 = r.getProperty(ITSRDF.taIdentRef);
+            ref = ( st3!=null ) ? st3.getObject().asResource().getURI() : null;
+        }
+        return ref;
+	}
+	
 	public static String extractDocumentURI(Model nifModel){
 		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
       
 		while(iter.hasNext()){
 			Resource contextRes = iter.nextStatement().getSubject();
-			System.out.println(contextRes.getURI());
+			//System.out.println(contextRes.getURI());
 			String uri = contextRes.getURI();
 			return uri.substring(0, uri.indexOf('#'));
+		}
+		throw new eu.freme.broker.exception.BadRequestException("No context/document found.");
+	}
+
+	public static String extractDocumentWholeURI(Model nifModel){
+		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
+      
+		while(iter.hasNext()){
+			Resource contextRes = iter.nextStatement().getSubject();
+			//System.out.println(contextRes.getURI());
+			String uri = contextRes.getURI();
+			return uri;
 		}
 		throw new eu.freme.broker.exception.BadRequestException("No context/document found.");
 	}
@@ -88,7 +110,7 @@ public class NIFReader {
 				return uri;
 			}
 		}
-		throw new eu.freme.broker.exception.BadRequestException("No document path found found.");
+		throw new eu.freme.broker.exception.BadRequestException("No document path found.");
 	}
 
 	public static String extractDocumentNIFPath(Model nifModel){
@@ -103,7 +125,7 @@ public class NIFReader {
 				return uri;
 			}
 		}
-		throw new eu.freme.broker.exception.BadRequestException("No document path found found.");
+		throw new eu.freme.broker.exception.BadRequestException("No document path found.");
 	}
 	
 	public static List<String[]> extractEntities(Model nifModel){
@@ -130,9 +152,20 @@ public class NIFReader {
 	}
 
 	public static Model extractModelFromString(String content) throws Exception {
-		Model outModel = ModelFactory.createDefaultModel();
+		//Model outModel = ModelFactory.createDefaultModel();
+		Model outModel = NIFWriter.initializeOutputModel();
 		RDFConversionService rdfConversion = new JenaRDFConversionService();
 		outModel = rdfConversion.unserializeRDF(content, RDFSerialization.RDF_XML);
+		if(outModel==null){
+        	return null;
+        }
+		return outModel;
+	}
+	public static Model extractModelFromTurtleString(String content) throws Exception {
+		//Model outModel = ModelFactory.createDefaultModel();
+		Model outModel = NIFWriter.initializeOutputModel();
+		RDFConversionService rdfConversion = new JenaRDFConversionService();
+		outModel = rdfConversion.unserializeRDF(content, RDFSerialization.TURTLE);
 		if(outModel==null){
         	return null;
         }

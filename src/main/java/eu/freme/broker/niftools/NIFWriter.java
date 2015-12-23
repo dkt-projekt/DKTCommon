@@ -81,6 +81,9 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
 		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		
+		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
+//		outModel.add(spanAsResource, NIF.referenceContext, outModel.createTypedLiteral("ReferenceContextDummy", XSDDatatype.XSDstring));
 		for (String taIdentRef : list) {
 			outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
 		}
@@ -141,14 +144,27 @@ public class NIFWriter {
 
 	}
 	
-	public Model initializeOutputModel(){
+	public static Model initializeOutputModel(){
 		Model model = ModelFactory.createDefaultModel();
-		
 		//TODO Add NIF namespaces and more.
         Map<String,String> prefixes = new HashMap<String, String>();
         prefixes.put("xsd", "<http://www.w3.org/2001/XMLSchema#>");
         prefixes.put("nif", "<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>");
         prefixes.put("dfkinif", "<http://persistence.dfki.de/ontologies/nif#>");
+        //prefixes.put("dbpedia-fr", "<http://fr.dbpedia.org/resource/>");
+        //prefixes.put("dbc", "<http://dbpedia.org/resource/Category:>");
+        //prefixes.put("dbpedia-es", "<http://es.dbpedia.org/resource/>");
+		//prefixes.put("itsrdf", "<http://www.w3.org/2005/11/its/rdf#>");
+		//prefixes.put("dbpedia", "<http://dbpedia.org/resource/>");
+		//prefixes.put("rdfs", "<http://www.w3.org/2000/01/rdf-schema#>");
+		//prefixes.put("dbpedia-de", "<http://de.dbpedia.org/resource/>");
+		//prefixes.put("dbpedia-ru", "<http://ru.dbpedia.org/resource/>");
+		////prefixes.put("freme-onto", "<http://freme-project.eu/ns#>");
+		//prefixes.put("dbpedia-nl", "<http://nl.dbpedia.org/resource/>");
+		//prefixes.put("dcterms", "<http://purl.org/dc/terms/>");
+		//prefixes.put("dbpedia-it", "<http://it.dbpedia.org/resource/>");
+        
+        
         model.setNsPrefixes(prefixes);
         
 		return model;
