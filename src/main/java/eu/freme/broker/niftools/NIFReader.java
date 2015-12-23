@@ -51,9 +51,11 @@ public class NIFReader {
 	}
 	
 	public static String model2String(Model nifModel, String format) {
-		
 		StringWriter writer = new StringWriter();
+//		nifModel.write(writer, format);
+//		nifModel.write(writer, format);
 		nifModel.write(writer, format);
+//		nifModel.write(writer, format);
 		try {
 			writer.close();
 		} catch (IOException e) {
