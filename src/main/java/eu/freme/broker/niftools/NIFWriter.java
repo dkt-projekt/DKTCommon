@@ -169,4 +169,16 @@ public class NIFWriter {
         
 		return model;
 	}
+
+	public static void addADateStats(Model outModel, String inputText, String documentURI, String meanDate, String stdDevDate){
+		
+		int endTotalText = inputText.codePointCount(0, inputText.length());
+		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+
+        Resource documentResource = outModel.getResource(documentUri);
+        
+        outModel.add(documentResource, NIF.property("meanDate"), outModel.createTypedLiteral(meanDate, XSDDatatype.XSDstring));
+        outModel.add(documentResource, NIF.property("meanStandardDeviation"), outModel.createTypedLiteral(stdDevDate, XSDDatatype.XSDstring));
+	}
+	
 }
