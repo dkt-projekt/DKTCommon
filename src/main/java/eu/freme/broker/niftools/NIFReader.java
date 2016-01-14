@@ -16,6 +16,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
 import eu.freme.common.conversion.rdf.JenaRDFConversionService;
 import eu.freme.common.conversion.rdf.RDFConstants.RDFSerialization;
 import eu.freme.common.conversion.rdf.RDFConversionService;
+import eu.freme.common.exception.BadRequestException;
 
 //import eu.freme.broker.eopennlp.exceptions.ExternalServiceFailedException;
 
@@ -43,7 +44,7 @@ public class NIFReader {
         }
 
         if (str == null) {
-            throw new eu.freme.broker.exception.BadRequestException("No text to process.");
+            throw new BadRequestException("No text to process.");
         }
 
 		
@@ -83,7 +84,7 @@ public class NIFReader {
 			String uri = contextRes.getURI();
 			return uri.substring(0, uri.indexOf('#'));
 		}
-		throw new eu.freme.broker.exception.BadRequestException("No context/document found.");
+		throw new BadRequestException("No context/document found.");
 	}
 
 	public static String extractDocumentWholeURI(Model nifModel){
@@ -95,7 +96,7 @@ public class NIFReader {
 			String uri = contextRes.getURI();
 			return uri;
 		}
-		throw new eu.freme.broker.exception.BadRequestException("No context/document found.");
+		throw new BadRequestException("No context/document found.");
 	}
 
 	public static String extractDocumentPath(Model nifModel){
@@ -110,7 +111,7 @@ public class NIFReader {
 				return uri;
 			}
 		}
-		throw new eu.freme.broker.exception.BadRequestException("No document path found.");
+		throw new BadRequestException("No document path found.");
 	}
 
 	public static String extractDocumentNIFPath(Model nifModel){
@@ -125,7 +126,7 @@ public class NIFReader {
 				return uri;
 			}
 		}
-		throw new eu.freme.broker.exception.BadRequestException("No document path found.");
+		throw new BadRequestException("No document path found.");
 	}
 	
 	public static List<String[]> extractEntities(Model nifModel){

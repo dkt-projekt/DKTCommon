@@ -4,7 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import eu.freme.broker.exception.BadRequestException;
+import eu.freme.common.exception.BadRequestException;
 
 public class ResponseGenerator {
 

@@ -1,6 +1,6 @@
 package eu.freme.broker.tools;
 
-import eu.freme.broker.exception.BadRequestException;
+import eu.freme.common.exception.BadRequestException;
 
 public class ParameterChecker {
 
