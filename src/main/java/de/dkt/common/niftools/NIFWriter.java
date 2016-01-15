@@ -1,4 +1,4 @@
-package eu.freme.broker.niftools;
+package de.dkt.common.niftools;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +10,9 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-import eu.freme.broker.niftools.ITSRDF;
-import eu.freme.broker.niftools.NIF;
-import eu.freme.broker.niftools.NIFTransferPrefixMapping;
+import de.dkt.common.niftools.ITSRDF;
+import de.dkt.common.niftools.NIF;
+import de.dkt.common.niftools.NIFTransferPrefixMapping;
 
 public class NIFWriter {
 

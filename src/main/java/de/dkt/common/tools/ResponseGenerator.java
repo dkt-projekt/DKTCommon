@@ -1,4 +1,4 @@
-package eu.freme.broker.tools;
+package de.dkt.common.tools;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
