@@ -69,6 +69,20 @@ public class NIFWriter {
         
 	}
 
+	public static void addParagraphEntity(Model outModel, int startIndex, int endIndex){
+		String docURI = "http://dkt.dfki.de/examples/"; 
+		docURI = NIFReader.extractDocumentURI(outModel);
+		String paragraphUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource paragraphAsResource = outModel.createResource(paragraphUri);
+		outModel.add(paragraphAsResource, RDF.type, NIF.String);
+		outModel.add(paragraphAsResource, RDF.type, NIF.RFC5147String);
+		outModel.add(paragraphAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(paragraphAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		
+	}
+
+	
 	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, List<String> list, String nerType){
 		String docURI = "http://dkt.dfki.de/examples/"; 
 		docURI = NIFReader.extractDocumentURI(outModel);
