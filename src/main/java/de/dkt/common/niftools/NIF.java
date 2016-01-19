@@ -42,6 +42,7 @@ public class NIF {
     public static final Property meanDate = property("meanDate");
     public static final Property stdevDate = property("stdevDate");
 
+    public static final Property meanDateRange = property("meanDateRange");
     
     
 
