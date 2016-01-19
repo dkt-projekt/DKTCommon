@@ -39,7 +39,9 @@ public class NIF {
     public static final Property keyword = property("keyword");
     public static final Property referenceContext = property("referenceContext");
     public static final Property topic = property("topic");
-    
+    public static final Property meanDate = property("meanDate");
+    public static final Property stdevDate = property("stdevDate");
+
     
     
 

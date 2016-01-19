@@ -152,6 +152,30 @@ public class NIFReader {
 		return list;
 	}
 
+	
+	public static List<String[]> extractTempStats(Model nifModel){
+		List<String[]> list = new LinkedList<String[]>();
+				
+//	      nif:meanDate "19360621060000"^^xsd:string ;
+//	      nif:stdevDate "96"^^xsd:string .
+	    
+        ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.meanDate);
+        while (iterEntities.hasNext()) {
+            Resource r = iterEntities.nextResource();
+            Statement st = r.getProperty(NIF.meanDate);
+            String stringSt = ( st!=null ) ? st.getLiteral().getString() : null;
+            Statement st2 = r.getProperty(NIF.stdevDate);
+            String stringSt2 = ( st2!=null ) ? st2.getLiteral().getString() : null;
+//            System.out.println("7."+st2.getLiteral().getString());
+            String [] information = {stringSt,stringSt2};
+            list.add(information);
+        }
+        if(list.isEmpty()){
+        	return null;
+        }
+		return list;
+	}
+	
 	public static Model extractModelFromString(String content) throws Exception {
 		//Model outModel = ModelFactory.createDefaultModel();
 		Model outModel = NIFWriter.initializeOutputModel();
@@ -162,6 +186,18 @@ public class NIFReader {
         }
 		return outModel;
 	}
+
+	public static Model extractModelFromFormatString(String content, RDFSerialization rdfSerialization) throws Exception {
+		//Model outModel = ModelFactory.createDefaultModel();
+		Model outModel = NIFWriter.initializeOutputModel();
+		RDFConversionService rdfConversion = new JenaRDFConversionService();
+		outModel = rdfConversion.unserializeRDF(content, rdfSerialization);
+		if(outModel==null){
+        	return null;
+        }
+		return outModel;
+	}
+
 	public static Model extractModelFromTurtleString(String content) throws Exception {
 		//Model outModel = ModelFactory.createDefaultModel();
 		Model outModel = NIFWriter.initializeOutputModel();
