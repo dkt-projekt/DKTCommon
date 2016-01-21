@@ -11,10 +11,13 @@ import de.dkt.common.exceptions.FileNotFoundException;
 
 public class FileFactory {
 
+	public static void main(String[] args) throws Exception {
+		File f = FileFactory.generateFileInstance("/Users/jumo04/Documents/DFKI/DKT/dkt-test/testComplete/sesameStorage/testTimelining");
+	}
 	
 	public static File generateFileInstance(String path) throws IOException {
 		
-		try{ 
+		try{
 			//Test if it is http file
 			if(path.startsWith("http")){
 				UrlResource ur = new UrlResource(path);
@@ -35,6 +38,16 @@ public class FileFactory {
 					throw new IOException("FTP file not found or not accesible.");
 				}
 			}
+			else if(path.startsWith("file:")){
+				UrlResource ur = new UrlResource(path);
+				//TODO Authentication needed
+				if(ur!=null && ur.exists()){
+					return ur.getFile();
+				}
+				else{
+					throw new IOException("Network file not found or not accesible.");
+				}
+			}
 			else{
 				//The rest of the possibilities: classpath, filesystem or network storage
 				ClassPathResource cpr = new ClassPathResource(path);
@@ -49,15 +62,16 @@ public class FileFactory {
 					else{
 						if(path.startsWith("/") || path.charAt(1)==':'){
 							//Network storage
-							UrlResource ur = new UrlResource(path);
-							if(ur!=null && ur.exists()){
-								return ur.getFile();
+							try{
+								UrlResource ur = new UrlResource(path);
+								if(ur!=null && ur.exists()){
+									return ur.getFile();
+								}
 							}
-							else{
-								throw new IOException("Network file not found or not accesible.");
+							catch(Exception e){
 							}
 						}
-						throw new IOException("File not found.");
+						throw new IOException("File ["+path+"] not found.");
 					}
 				}
 			}
@@ -77,7 +91,6 @@ public class FileFactory {
 			return f;
 		}
 		catch(Exception e){
-			
 			//Parent folder
 			String parentPath = path.substring(0,path.lastIndexOf(File.separator)+1);
 			
@@ -88,6 +101,10 @@ public class FileFactory {
 			else if(path.startsWith("ftp")){
 				//TODO FTP file generation not implemented yet.
 				throw new IOException("FTP file generation not implemented yet.");
+			}
+			else if(path.startsWith("file:")){
+				//TODO FTP file generation not implemented yet.
+				throw new IOException("NETWORK file generation not implemented yet.");
 			}
 			else{
 //				System.out.println(parentPath);
@@ -152,10 +169,12 @@ public class FileFactory {
 			String parentPath;
 			if(path.endsWith(File.separator)){
 				path = path.substring(0, path.length()-1);
+			}
+			if(path.lastIndexOf(File.separator)!=-1){
 				parentPath = path.substring(0,path.lastIndexOf(File.separator)+1);
 			}
 			else{
-				parentPath = path.substring(0,path.lastIndexOf(File.separator)+1);
+				parentPath = ".";
 			}
 			
 			if(path.startsWith("http")){
@@ -166,9 +185,21 @@ public class FileFactory {
 				//TODO FTP file generation not implemented yet.
 				throw new IOException("FTP file generation not implemented yet.");
 			}
+			else if(path.startsWith("file:")){
+				//TODO FTP file generation not implemented yet.
+				throw new IOException("NETWORK file generation not implemented yet.");
+			}
 			else{
 				//The rest of the possibilities: classpath, filesystem or network storage
+//				System.out.println("Working Directory = " +
+//			              System.getProperty("user.dir"));
+//				System.out.println("PARENTPATH: "+parentPath);
 				ClassPathResource cpr = new ClassPathResource(parentPath);
+//				System.out.println("CPR: "+cpr);
+//				System.out.println("CPRPATH: "+cpr.getPath());
+//				System.out.println("CPREXISTS: "+cpr.exists());
+//				System.out.println("CPRURL: "+cpr.getURL());
+//				System.out.println("CPRURL: "+cpr.getFile().getAbsolutePath());
 				if(cpr!=null && cpr.exists()){
 					File newFile = new File(cpr.getFile(),path.substring(path.lastIndexOf(File.separator)));
 					if(newFile.mkdir()){
@@ -193,20 +224,21 @@ public class FileFactory {
 						if(path.startsWith("/") || path.charAt(1)==':'){
 							throw new IOException("Parent folder not found for creating the file.");
 						}
-						//Network storage
-						UrlResource ur = new UrlResource(parentPath);
-						if(ur!=null && ur.exists()){
-							File newFile = new File(ur.getFile(),path.substring(path.lastIndexOf(File.separator)));
-							if(newFile.mkdir()){
-								return newFile;
-							}
-							else{
-								throw new IOException("Unable to generate directory: "+newFile.getAbsolutePath());
+						try{
+							UrlResource ur = new UrlResource(parentPath);
+							if(ur!=null && ur.exists()){
+								File newFile = new File(ur.getFile(),path.substring(path.lastIndexOf(File.separator)));
+								if(newFile.mkdir()){
+									return newFile;
+								}
+								else{
+									throw new IOException("Unable to generate directory: "+newFile.getAbsolutePath());
+								}
 							}
 						}
-						else{
-							throw new IOException("Network file not found or not accesible.");
+						catch(Exception ex){
 						}
+						throw new IOException("File ["+path+"] not found.");
 					}
 				}
 			}

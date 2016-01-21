@@ -1,0 +1,76 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix itsrdf: <http://www.w3.org/2005/11/its/rdf#> .
+@prefix nif:   <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://dkt.dfki.de/examples/#char=494,505>
+        a                  nif:RFC5147String , nif:String ;
+        nif:anchorOf       "5 September"^^xsd:string ;
+        nif:beginIndex     "494"^^xsd:nonNegativeInteger ;
+        nif:endIndex       "505"^^xsd:nonNegativeInteger ;
+        nif:entity         <http://dkt.dfki.de/ontologies/nif#date> ;
+        itsrdf:taIdentRef  <http://dkt.dfki.de/ontologies/nif#date=00010905000000_00010906000000> .
+
+<http://dkt.dfki.de/examples/#char=399,403>
+        a                  nif:RFC5147String , nif:String ;
+        nif:anchorOf       "July"^^xsd:string ;
+        nif:beginIndex     "399"^^xsd:nonNegativeInteger ;
+        nif:endIndex       "403"^^xsd:nonNegativeInteger ;
+        nif:entity         <http://dkt.dfki.de/ontologies/nif#date> ;
+        itsrdf:taIdentRef  <http://dkt.dfki.de/ontologies/nif#date=00010701000000_00010702000000> .
+
+<http://dkt.dfki.de/examples/#char=407,416>
+        a                  nif:RFC5147String , nif:String ;
+        nif:anchorOf       "September"^^xsd:string ;
+        nif:beginIndex     "407"^^xsd:nonNegativeInteger ;
+        nif:endIndex       "416"^^xsd:nonNegativeInteger ;
+        nif:entity         <http://dkt.dfki.de/ontologies/nif#date> ;
+        itsrdf:taIdentRef  <http://dkt.dfki.de/ontologies/nif#date=00010901000000_00010902000000> .
+
+<http://dkt.dfki.de/examples/#char=0,813>
+        a                  nif:RFC5147String , nif:String , nif:Context ;
+        nif:beginIndex     "0"^^xsd:nonNegativeInteger ;
+        nif:endIndex       "813"^^xsd:nonNegativeInteger ;
+        nif:isString       "1936\n\nCoup leader Sanjurjo was killed in a plane crash on 20 July, leaving an effective command split between Mola in the North and Franco in the South. On 21 July, the fifth day of the rebellion, the Nationalists captured the main Spanish naval base at Ferrol in northwestern Spain. A rebel force under Colonel Beorlegui Canet, sent by General Emilio Mola, undertook the Campaign of Guipúzcoa from July to September. The capture of Guipúzcoa isolated the Republican provinces in the north. On 5 September, after heavy fighting the force took Irún, closing the French border to the Republicans. On 13 September, the Basques surrendered San Sebastián to the Nationalists, who then advanced toward their capital, Bilbao. The Republican militias on the border of Viscaya halted these forces at the end of September.\n"^^xsd:string ;
+        nif:meanDateRange  "02110711030000_16631213030000"^^xsd:string .
+
+<http://dkt.dfki.de/examples/#char=795,811>
+        a                  nif:RFC5147String , nif:String ;
+        nif:anchorOf       "end of September"^^xsd:string ;
+        nif:beginIndex     "795"^^xsd:nonNegativeInteger ;
+        nif:endIndex       "811"^^xsd:nonNegativeInteger ;
+        nif:entity         <http://dkt.dfki.de/ontologies/nif#date> ;
+        itsrdf:taIdentRef  <http://dkt.dfki.de/ontologies/nif#date=00010920000000_00010930000000> .
+
+<http://dkt.dfki.de/examples/#char=0,4>
+        a                  nif:RFC5147String , nif:String ;
+        nif:anchorOf       "1936"^^xsd:string ;
+        nif:beginIndex     "0"^^xsd:nonNegativeInteger ;
+        nif:endIndex       "4"^^xsd:nonNegativeInteger ;
+        nif:entity         <http://dkt.dfki.de/ontologies/nif#date> ;
+        itsrdf:taIdentRef  <http://dkt.dfki.de/ontologies/nif#date=19360101000000_19370101000000> .
+
+<http://dkt.dfki.de/examples/#char=156,163>
+        a                  nif:RFC5147String , nif:String ;
+        nif:anchorOf       "21 July"^^xsd:string ;
+        nif:beginIndex     "156"^^xsd:nonNegativeInteger ;
+        nif:endIndex       "163"^^xsd:nonNegativeInteger ;
+        nif:entity         <http://dkt.dfki.de/ontologies/nif#date> ;
+        itsrdf:taIdentRef  <http://dkt.dfki.de/ontologies/nif#date=19360721000000_19360722000000> .
+
+<http://dkt.dfki.de/examples/#char=598,610>
+        a                  nif:RFC5147String , nif:String ;
+        nif:anchorOf       "13 September"^^xsd:string ;
+        nif:beginIndex     "598"^^xsd:nonNegativeInteger ;
+        nif:endIndex       "610"^^xsd:nonNegativeInteger ;
+        nif:entity         <http://dkt.dfki.de/ontologies/nif#date> ;
+        itsrdf:taIdentRef  <http://dkt.dfki.de/ontologies/nif#date=00010913000000_00010914000000> .
+
+<http://dkt.dfki.de/examples/#char=58,65>
+        a                  nif:RFC5147String , nif:String ;
+        nif:anchorOf       "20 July"^^xsd:string ;
+        nif:beginIndex     "58"^^xsd:nonNegativeInteger ;
+        nif:endIndex       "65"^^xsd:nonNegativeInteger ;
+        nif:entity         <http://dkt.dfki.de/ontologies/nif#date> ;
+        itsrdf:taIdentRef  <http://dkt.dfki.de/ontologies/nif#date=19360720000000_19360721000000> .
