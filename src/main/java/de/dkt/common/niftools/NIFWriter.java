@@ -83,7 +83,7 @@ public class NIFWriter {
 	}
 
 	
-	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, List<String> list, String nerType){
+	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, List<String> list, String nerType, String additionalInfo){
 		String docURI = "http://dkt.dfki.de/examples/"; 
 		docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
@@ -102,6 +102,9 @@ public class NIFWriter {
 			outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
 		}
 		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+		if (nerType.equals(DFKINIF.location.toString()) && additionalInfo != null){
+			outModel.add(spanAsResource, NIF.geoPoint, outModel.createTypedLiteral(additionalInfo, XSDDatatype.XSDstring));
+		}
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
         
 	}
@@ -184,15 +187,21 @@ public class NIFWriter {
 		return model;
 	}
 
-	public static void addADateStats(Model outModel, String inputText, String documentURI, String meanDateRange){
+	public static void addDateStats(Model outModel, String inputText, String documentURI, String meanDateRange){
 		
 		int endTotalText = inputText.codePointCount(0, inputText.length());
 		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
-
         Resource documentResource = outModel.getResource(documentUri);
-        
         outModel.add(documentResource, NIF.meanDateRange, outModel.createTypedLiteral(meanDateRange, XSDDatatype.XSDstring));
-
+	}
+	
+	public static void addGeoStats(Model outModel, String inputText, String documentURI, String centralGeoPoint, String geoStdDevs){
+		
+		int endTotalText = inputText.codePointCount(0, inputText.length());
+		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+        Resource documentResource = outModel.getResource(documentUri);
+        outModel.add(documentResource, NIF.centralGeoPoint, outModel.createTypedLiteral(centralGeoPoint, XSDDatatype.XSDstring));
+        outModel.add(documentResource, NIF.geoStandardDevs, outModel.createTypedLiteral(geoStdDevs, XSDDatatype.XSDstring));
 	}
 	
 }
