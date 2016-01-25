@@ -72,12 +72,16 @@ public class DKTCommonTest {
 		if(OS.startsWith("Mac")){
 		}
 		else if(OS.startsWith("Windows")){
-			filePath = "";
+			filePath = "C:/";
 			filePath2 = "";
 			filePath3 = "";
 			filePath4 = "";
 		}
 		else if(OS.startsWith("Linux")){
+			filePath = "/tmp/storage/documents/prueba101.txt";
+			filePath2 = "/tmp/storage/documents/prueba102.txt";
+			filePath3 = "/tmp/storage/documents/prueba103.txt";
+			filePath4 = "/tmp/storage/documents/testfolder";
 		}
 
 		File f = FileFactory.generateFileInstance(filePath);
