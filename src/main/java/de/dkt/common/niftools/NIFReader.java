@@ -98,6 +98,7 @@ public class NIFReader {
 		}
 		throw new BadRequestException("No context/document found.");
 	}
+	
 
 	public static String extractDocumentPath(Model nifModel){
 		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
