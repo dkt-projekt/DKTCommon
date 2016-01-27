@@ -205,10 +205,10 @@ public class NIFWriter {
 	}
 
 
-	public static void addEntityProperty(Model nifModel, int beginIndex, int endIndex, String documentURI, String info, Property prop) {
+	public static void addEntityProperty(Model nifModel, int beginIndex, int endIndex, String documentURI, String info, Property prop, XSDDatatype dataType) {
 		String entityUri = new StringBuilder().append(documentURI).append("#char=").append(Integer.toString(beginIndex)).append(',').append(Integer.toString(endIndex)).toString();
 		Resource entityResource = nifModel.getResource(entityUri);
-		nifModel.add(entityResource, prop, nifModel.createTypedLiteral(info, XSDDatatype.XSDstring));
+		nifModel.add(entityResource, prop, nifModel.createTypedLiteral(info, dataType));
 	}
 	
 	public static void addLuceneIndexingInformation(Model outModel, String inputText, String documentURI, String indexName, String indexPath){

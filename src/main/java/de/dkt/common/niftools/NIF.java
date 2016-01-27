@@ -39,6 +39,10 @@ public class NIF {
     public static final Property keyword = property("keyword");
     public static final Property referenceContext = property("referenceContext");
     public static final Property topic = property("topic");
+    
+    public static final Property indexName = property("indexName");
+    public static final Property indexPath = property("indexPath");
+    
     public static final Property meanDate = property("meanDate");
     public static final Property stdevDate = property("stdevDate");
 
@@ -46,9 +50,7 @@ public class NIF {
     public static final Property geoPoint = property("geoPoint");
     public static final Property centralGeoPoint = property("centralGeoPoint");
     public static final Property geoStandardDevs = property("geoStandardDevs");
-    
-    public static final Property indexName = property("indexName");
-    public static final Property indexPath = property("indexPath");
-    
-
+    public static final Property birthDate = property("birthDate");
+    public static final Property deathDate = property("deathDate");
+    public static final Property orgType = property("organizationType");
 }

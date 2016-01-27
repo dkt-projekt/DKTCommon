@@ -41,6 +41,6 @@ public class DFKINIF {
     public static final Property entity = property("entity");
     public static final Property keyword = property("keyword");
     
-    
+
 
 }
