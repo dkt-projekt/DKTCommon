@@ -204,10 +204,19 @@ public class NIFWriter {
         outModel.add(documentResource, NIF.geoStandardDevs, outModel.createTypedLiteral(geoStdDevs, XSDDatatype.XSDstring));
 	}
 
+
 	public static void addEntityProperty(Model nifModel, int beginIndex, int endIndex, String documentURI, String info, Property prop) {
 		String entityUri = new StringBuilder().append(documentURI).append("#char=").append(Integer.toString(beginIndex)).append(',').append(Integer.toString(endIndex)).toString();
 		Resource entityResource = nifModel.getResource(entityUri);
 		nifModel.add(entityResource, prop, nifModel.createTypedLiteral(info, XSDDatatype.XSDstring));
 	}
 	
+	public static void addLuceneIndexingInformation(Model outModel, String inputText, String documentURI, String indexName, String indexPath){
+		
+		int endTotalText = inputText.codePointCount(0, inputText.length());
+		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+        Resource documentResource = outModel.getResource(documentUri);
+        outModel.add(documentResource, NIF.indexName, outModel.createTypedLiteral(indexName, XSDDatatype.XSDstring));
+        outModel.add(documentResource, NIF.indexPath, outModel.createTypedLiteral(indexPath, XSDDatatype.XSDstring));
+	}
 }
