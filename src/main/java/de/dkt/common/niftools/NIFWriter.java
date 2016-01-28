@@ -7,7 +7,9 @@ import java.util.Map;
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import de.dkt.common.niftools.ITSRDF;
@@ -83,7 +85,7 @@ public class NIFWriter {
 	}
 
 	
-	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, List<String> list, String nerType, String additionalInfo){
+	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, List<String> list, String nerType){
 		String docURI = "http://dkt.dfki.de/examples/"; 
 		docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
@@ -102,9 +104,7 @@ public class NIFWriter {
 			outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
 		}
 		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
-		if (nerType.equals(DFKINIF.location.toString()) && additionalInfo != null){
-			outModel.add(spanAsResource, NIF.geoPoint, outModel.createTypedLiteral(additionalInfo, XSDDatatype.XSDstring));
-		}
+		
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
         
 	}
@@ -204,6 +204,12 @@ public class NIFWriter {
         outModel.add(documentResource, NIF.geoStandardDevs, outModel.createTypedLiteral(geoStdDevs, XSDDatatype.XSDstring));
 	}
 
+
+	public static void addEntityProperty(Model nifModel, int beginIndex, int endIndex, String documentURI, String info, Property prop, XSDDatatype dataType) {
+		String entityUri = new StringBuilder().append(documentURI).append("#char=").append(Integer.toString(beginIndex)).append(',').append(Integer.toString(endIndex)).toString();
+		Resource entityResource = nifModel.getResource(entityUri);
+		nifModel.add(entityResource, prop, nifModel.createTypedLiteral(info, dataType));
+	}
 	
 	public static void addLuceneIndexingInformation(Model outModel, String inputText, String documentURI, String indexName, String indexPath){
 		
