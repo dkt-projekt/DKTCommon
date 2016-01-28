@@ -50,5 +50,12 @@ public class NIF {
     public static final Property indexName = property("indexName");
     public static final Property indexPath = property("indexPath");
     
+    public static final Property birthDate = property("birthDate");
+    public static final Property deathDate = property("deathDate");
+    public static final Property normalizedDate = property("normalizedDate");
+//    public static final Property  = property("");
+//    public static final Property  = property("");
+//    public static final Property  = property("");
+//    public static final Property  = property("");
 
 }

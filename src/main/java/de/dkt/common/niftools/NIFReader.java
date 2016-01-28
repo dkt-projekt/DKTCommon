@@ -2,8 +2,10 @@ package de.dkt.common.niftools;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -150,6 +152,65 @@ public class NIFReader {
         	return null;
         }
 		return list;
+	}
+
+	public static Map<String,Map<String,String>> extractEntitiesExtended(Model nifModel){
+		Map<String,Map<String,String>> list = new HashMap<String,Map<String,String>>();
+				
+        ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+        while (iterEntities.hasNext()) {
+    		Map<String,String> map = new HashMap<String,String>();
+            Resource r = iterEntities.nextResource();
+
+            String entityURI = "";
+            
+            StmtIterator iter2 = r.listProperties();
+            while (iter2.hasNext()) {
+				Statement st2 = iter2.next();
+				String predicate =st2.getPredicate().getURI(); 
+				String object = null;
+				if(st2.getObject().isResource()){
+					object = st2.getObject().asResource().getURI();
+				}
+				else{
+					object = st2.getObject().asLiteral().getString();
+				}
+				map.put(predicate,object);
+			}
+            if(!map.isEmpty()){
+                list.put(entityURI,map);
+            }
+        }
+        if(list.isEmpty()){
+        	return null;
+        }
+		return list;
+	}
+
+	public static Map<String,String> extractDocumentInformation(Model nifModel){
+		Map<String,String> map = new HashMap<String,String>();
+		
+        ResIterator iterEntities = nifModel.listSubjectsWithProperty(RDF.type,"http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#Context");
+        while (iterEntities.hasNext()) {
+            Resource r = iterEntities.nextResource();
+            StmtIterator iter2 = r.listProperties();
+            while (iter2.hasNext()) {
+				Statement st2 = iter2.next();
+				String predicate =st2.getPredicate().getURI(); 
+				String object = null;
+				if(st2.getObject().isResource()){
+					object = st2.getObject().asResource().getURI();
+				}
+				else{
+					object = st2.getObject().asLiteral().getString();
+				}
+				map.put(predicate,object);
+			}
+        }
+        if(map.isEmpty()){
+        	return null;
+        }
+		return map;
 	}
 
 	
