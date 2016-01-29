@@ -163,7 +163,7 @@ public class NIFReader {
     		Map<String,String> map = new HashMap<String,String>();
             Resource r = iterEntities.nextResource();
 
-            String entityURI = "";
+            String entityURI = r.getURI();
             
             StmtIterator iter2 = r.listProperties();
             while (iter2.hasNext()) {
