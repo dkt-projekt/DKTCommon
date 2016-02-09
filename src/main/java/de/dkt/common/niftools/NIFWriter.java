@@ -37,7 +37,7 @@ public class NIFWriter {
 	}
 	
 	public static void addAnnotationWithTaIdentRef(Model outModel, int startIndex, int endIndex, String text, String taIdentRef){
-		String docURI = "http://dkt.dfki.de/examples/"; 
+		String docURI = NIFReader.extractDocumentURI(outModel);
 		docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
@@ -54,7 +54,7 @@ public class NIFWriter {
 	}
 
 	public static void addAnnotationEntity(Model outModel, int startIndex, int endIndex, String text, String taIdentRef, String nerType){
-		String docURI = "http://dkt.dfki.de/examples/"; 
+		String docURI = NIFReader.extractDocumentURI(outModel);
 		docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
@@ -72,7 +72,7 @@ public class NIFWriter {
 	}
 
 	public static void addParagraphEntity(Model outModel, int startIndex, int endIndex){
-		String docURI = "http://dkt.dfki.de/examples/"; 
+		String docURI = NIFReader.extractDocumentURI(outModel);
 		docURI = NIFReader.extractDocumentURI(outModel);
 		String paragraphUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
@@ -86,7 +86,7 @@ public class NIFWriter {
 
 	
 	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, List<String> list, String nerType){
-		String docURI = "http://dkt.dfki.de/examples/"; 
+		String docURI = NIFReader.extractDocumentURI(outModel);
 		docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
