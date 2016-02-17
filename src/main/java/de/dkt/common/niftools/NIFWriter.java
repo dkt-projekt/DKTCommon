@@ -84,6 +84,18 @@ public class NIFWriter {
 		
 	}
 
+	public static void addPosTagAnnotation(Model outModel, int startIndex, int endIndex, String text, String posTag){
+		String docURI = NIFReader.extractDocumentURI(outModel);
+		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(",").append(endIndex).toString();
+		Resource spanAsResource = outModel.createResource(spanUri);
+		outModel.add(spanAsResource, RDF.type, NIF.String);
+		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
+		outModel.add(spanAsResource, NIF.posTag, outModel.createResource(posTag));
+	}
 	
 	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, List<String> list, String nerType){
 		String docURI = NIFReader.extractDocumentURI(outModel);
@@ -112,8 +124,8 @@ public class NIFWriter {
 	
 	public static void addSpan(Model outModel, Resource documentResource, String inputText, String documentURI,
 			int start2, int end2) {
-		System.out.println("Start/END positions:" + start2 + "-" + end2);
-		System.out.println("inputtext length: "+inputText.length() + " inputtext: "+inputText);
+		//System.out.println("Start/END positions:" + start2 + "-" + end2);
+		//System.out.println("inputtext length: "+inputText.length() + " inputtext: "+inputText);
         int startInJavaText = start2;
         int endInJavaText = end2;
         //int start = inputText.codePointCount(0, startInJavaText);
@@ -167,7 +179,7 @@ public class NIFWriter {
         Map<String,String> prefixes = new HashMap<String, String>();
         prefixes.put("xsd", "<http://www.w3.org/2001/XMLSchema#>");
         prefixes.put("nif", "<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>");
-        prefixes.put("dfkinif", "<http://persistence.dfki.de/ontologies/nif#>");
+        //prefixes.put("dfkinif", "<http://persistence.dfki.de/ontologies/nif#>");
         //prefixes.put("dbpedia-fr", "<http://fr.dbpedia.org/resource/>");
         //prefixes.put("dbc", "<http://dbpedia.org/resource/Category:>");
         //prefixes.put("dbpedia-es", "<http://es.dbpedia.org/resource/>");
