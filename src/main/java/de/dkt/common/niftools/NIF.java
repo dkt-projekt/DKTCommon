@@ -36,6 +36,7 @@ public class NIF {
     public static final Property isString = property("isString");
     public static final Property endIndex = property("endIndex");
     public static final Property entity = property("entity");
+    public static final Property posTag = property("posTag");
     public static final Property keyword = property("keyword");
     public static final Property referenceContext = property("referenceContext");
     public static final Property topic = property("topic");
