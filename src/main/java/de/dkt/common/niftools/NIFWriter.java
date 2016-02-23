@@ -219,4 +219,18 @@ public class NIFWriter {
         outModel.add(documentResource, NIF.indexName, outModel.createTypedLiteral(indexName, XSDDatatype.XSDstring));
         outModel.add(documentResource, NIF.indexPath, outModel.createTypedLiteral(indexPath, XSDDatatype.XSDstring));
 	}
+
+	public static void addDocumentClassification(Model outModel, String inputText, String documentURI, String label){
+		int endTotalText = inputText.codePointCount(0, inputText.length());
+		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+        Resource documentResource = outModel.getResource(documentUri);
+        outModel.add(documentResource, NIF.documentClassification, outModel.createTypedLiteral(label, XSDDatatype.XSDstring));
+	}
+
+	public static void addTopicModelling(Model outModel, String inputText, String documentURI, String label){
+		int endTotalText = inputText.codePointCount(0, inputText.length());
+		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+        Resource documentResource = outModel.getResource(documentUri);
+        outModel.add(documentResource, NIF.topicModelling, outModel.createTypedLiteral(label, XSDDatatype.XSDstring));
+	}
 }

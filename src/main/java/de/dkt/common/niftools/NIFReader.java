@@ -53,6 +53,21 @@ public class NIFReader {
 		return str;
 	}
 	
+	public static String extractMeanDate(Model nifModel){
+		String str = null;
+        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
+        boolean textFound = false;
+        while (!textFound) {
+            Resource contextRes = iter.nextStatement().getSubject();
+            Statement isStringStm = contextRes.getProperty(NIF.meanDate);
+            if (isStringStm != null) {
+                str = isStringStm.getObject().asLiteral().getString();
+                textFound = true;
+            }
+        }
+		return str;
+	}
+
 	public static String model2String(Model nifModel, String format) {
 		StringWriter writer = new StringWriter();
 		nifModel.write(writer, format);

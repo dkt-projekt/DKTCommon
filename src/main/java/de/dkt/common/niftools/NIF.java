@@ -47,7 +47,10 @@ public class NIF {
     public static final Property geoPoint = property("geoPoint");
     public static final Property centralGeoPoint = property("centralGeoPoint");
     public static final Property geoStandardDevs = property("geoStandardDevs");
-    
+
+    public static final Property documentClassification = property("documentClassificationLabel");
+    public static final Property topicModelling = property("topicModellingLabel");
+
     public static final Property indexName = property("indexName");
     public static final Property indexPath = property("indexPath");
     

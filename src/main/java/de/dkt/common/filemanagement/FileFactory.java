@@ -1,7 +1,13 @@
 package de.dkt.common.filemanagement;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
@@ -83,36 +89,44 @@ public class FileFactory {
 	}
 	
 	public static File generateOrCreateFileInstance(String path) throws IOException {
-		try{ 
-			File f = generateFileInstance(path);
-			if(f==null || !f.exists()){
-				throw new FileNotFoundException("File not found");
-			}
+		File f = generateFileInstance(path);
+		if(f!=null && f.exists()){
+			System.out.println("Using existing file, not generating anything new");
 			return f;
 		}
-		catch(Exception e){
-			//Parent folder
-			String parentPath = path.substring(0,path.lastIndexOf(File.separator)+1);
-			
-			if(path.startsWith("http")){
-				//TODO HTTP file generation not implemented yet.
-				throw new IOException("HTTP file generation not implemented yet.");
-			}
-			else if(path.startsWith("ftp")){
-				//TODO FTP file generation not implemented yet.
-				throw new IOException("FTP file generation not implemented yet.");
-			}
-			else if(path.startsWith("file:")){
-				//TODO FTP file generation not implemented yet.
-				throw new IOException("NETWORK file generation not implemented yet.");
+		//Parent folder
+		String parentPath = path.substring(0,path.lastIndexOf(File.separator)+1);
+		
+		if(path.startsWith("http")){
+			//TODO HTTP file generation not implemented yet.
+			throw new IOException("HTTP file generation not implemented yet.");
+		}
+		else if(path.startsWith("ftp")){
+			//TODO FTP file generation not implemented yet.
+			throw new IOException("FTP file generation not implemented yet.");
+		}
+		else if(path.startsWith("file:")){
+			//TODO FTP file generation not implemented yet.
+			throw new IOException("NETWORK file generation not implemented yet.");
+		}
+		else{
+//				System.out.println(parentPath);
+			//The rest of the possibilities: classpath, filesystem or network storage
+			ClassPathResource cpr = new ClassPathResource(parentPath);
+			if(cpr!=null && cpr.exists()){
+//					System.out.println(path.substring(path.lastIndexOf(File.separator)));
+				File newFile = new File(cpr.getFile(),path.substring(path.lastIndexOf(File.separator)));
+				if(newFile.createNewFile()){
+					return newFile;
+				}
+				else{
+					throw new IOException("Unable to generate file: "+newFile.getAbsolutePath());
+				}
 			}
 			else{
-//				System.out.println(parentPath);
-				//The rest of the possibilities: classpath, filesystem or network storage
-				ClassPathResource cpr = new ClassPathResource(parentPath);
-				if(cpr!=null && cpr.exists()){
-//					System.out.println(path.substring(path.lastIndexOf(File.separator)));
-					File newFile = new File(cpr.getFile(),path.substring(path.lastIndexOf(File.separator)));
+				FileSystemResource fsr = new FileSystemResource(parentPath);
+				if(fsr!=null && fsr.exists()){
+					File newFile = new File(fsr.getFile(),path.substring(path.lastIndexOf(File.separator)));
 					if(newFile.createNewFile()){
 						return newFile;
 					}
@@ -121,9 +135,13 @@ public class FileFactory {
 					}
 				}
 				else{
-					FileSystemResource fsr = new FileSystemResource(parentPath);
-					if(fsr!=null && fsr.exists()){
-						File newFile = new File(fsr.getFile(),path.substring(path.lastIndexOf(File.separator)));
+					if(path.startsWith("/") || path.charAt(1)==':'){
+						throw new IOException("Parent folder not found for creating the file.");
+					}
+					//Network storage
+					UrlResource ur = new UrlResource(parentPath);
+					if(ur!=null && ur.exists()){
+						File newFile = new File(ur.getFile(),path.substring(path.lastIndexOf(File.separator)));
 						if(newFile.createNewFile()){
 							return newFile;
 						}
@@ -132,23 +150,7 @@ public class FileFactory {
 						}
 					}
 					else{
-						if(path.startsWith("/") || path.charAt(1)==':'){
-							throw new IOException("Parent folder not found for creating the file.");
-						}
-						//Network storage
-						UrlResource ur = new UrlResource(parentPath);
-						if(ur!=null && ur.exists()){
-							File newFile = new File(ur.getFile(),path.substring(path.lastIndexOf(File.separator)));
-							if(newFile.createNewFile()){
-								return newFile;
-							}
-							else{
-								throw new IOException("Unable to generate file: "+newFile.getAbsolutePath());
-							}
-						}
-						else{
-							throw new IOException("Network file not found or not accesible.");
-						}
+						throw new IOException("Network file not found or not accesible.");
 					}
 				}
 			}
@@ -243,5 +245,26 @@ public class FileFactory {
 				}
 			}
 		}
+	}
+	
+	public static BufferedWriter generateBufferedWriterInstance(String path, String encoding, boolean append) throws IOException {
+		File f = generateFileInstance(path);
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,append), encoding));
+		return bw;
+	}
+	public static BufferedReader generateBufferedReaderInstance(String path, String encoding) throws IOException {
+		File f = generateFileInstance(path);
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f), encoding));
+		return br;
+	}
+	public static BufferedWriter generateOrCreateBufferedWriterInstance(String path, String encoding, boolean append) throws IOException {
+		File f = generateOrCreateFileInstance(path);
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,append), encoding));
+		return bw;
+	}
+	public static BufferedReader generateOrCreateBufferedReaderInstance(String path, String encoding) throws IOException {
+		File f = generateOrCreateFileInstance(path);
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f), encoding));
+		return br;
 	}
 }
