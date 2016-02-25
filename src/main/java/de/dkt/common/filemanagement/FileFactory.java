@@ -89,10 +89,14 @@ public class FileFactory {
 	}
 	
 	public static File generateOrCreateFileInstance(String path) throws IOException {
-		File f = generateFileInstance(path);
-		if(f!=null && f.exists()){
-			System.out.println("Using existing file, not generating anything new");
-			return f;
+		try{
+			File f = generateFileInstance(path);
+			if(f!=null && f.exists()){
+				System.out.println("Using existing file, not generating anything new");
+				return f;
+			}
+		}
+		catch(Exception e){
 		}
 		//Parent folder
 		String parentPath = path.substring(0,path.lastIndexOf(File.separator)+1);
