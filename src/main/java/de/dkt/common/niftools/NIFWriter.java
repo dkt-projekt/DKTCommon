@@ -193,12 +193,18 @@ public class NIFWriter {
 		//prefixes.put("dcterms", "<http://purl.org/dc/terms/>");
 		//prefixes.put("dbpedia-it", "<http://it.dbpedia.org/resource/>");
         
-        
         model.setNsPrefixes(prefixes);
         
 		return model;
 	}
 
+	public static Model addPrefixToModel(Model model, String abbrev, String uri){
+		model.setNsPrefix(abbrev, uri);
+		return model;
+	}
+
+	
+	
 	public static void addDateStats(Model outModel, String inputText, String documentURI, String meanDateRange){
 		
 		int endTotalText = inputText.codePointCount(0, inputText.length());
@@ -207,13 +213,20 @@ public class NIFWriter {
         outModel.add(documentResource, NIF.meanDateRange, outModel.createTypedLiteral(meanDateRange, XSDDatatype.XSDstring));
 	}
 	
-	public static void addGeoStats(Model outModel, String inputText, String documentURI, String centralGeoPoint, String geoStdDevs){
+	//public static void addGeoStats(Model outModel, String inputText, String documentURI, String centralGeoPoint, String geoStdDevs){
+	public static void addGeoStats(Model outModel, String inputText, Double avgLatitude, Double avgLongitude, Double stdDevLatitude, Double stdDevLongitude, String docURI){
 		
+		// add prefix here
+		addPrefixToModel(outModel, "dfkinif", DFKINIF.uri);
 		int endTotalText = inputText.codePointCount(0, inputText.length());
-		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+		String documentUri = new StringBuilder().append(docURI).append("#char=").append("0").append(',').append(endTotalText).toString();
         Resource documentResource = outModel.getResource(documentUri);
-        outModel.add(documentResource, NIF.centralGeoPoint, outModel.createTypedLiteral(centralGeoPoint, XSDDatatype.XSDstring));
-        outModel.add(documentResource, NIF.geoStandardDevs, outModel.createTypedLiteral(geoStdDevs, XSDDatatype.XSDstring));
+        //outModel.add(documentResource, NIF.centralGeoPoint, outModel.createTypedLiteral(centralGeoPoint, XSDDatatype.XSDstring));
+        outModel.add(documentResource, DFKINIF.averageLatitude, outModel.createTypedLiteral(avgLatitude, XSDDatatype.XSDdouble));
+        outModel.add(documentResource, DFKINIF.averageLongitude, outModel.createTypedLiteral(avgLongitude, XSDDatatype.XSDdouble));
+        outModel.add(documentResource, DFKINIF.standardDeviationLatitude, outModel.createTypedLiteral(stdDevLatitude, XSDDatatype.XSDdouble));
+        outModel.add(documentResource, DFKINIF.standardDeviationLongitude, outModel.createTypedLiteral(stdDevLongitude, XSDDatatype.XSDdouble));
+        //outModel.add(documentResource, NIF.geoStandardDevs, outModel.createTypedLiteral(geoStdDevs, XSDDatatype.XSDstring));
 	}
 
 

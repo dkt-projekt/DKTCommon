@@ -93,10 +93,11 @@ public class FileFactory {
 			File f = generateFileInstance(path);
 			if(f!=null && f.exists()){
 				System.out.println("Using existing file, not generating anything new");
-				return f;
+				return f; 
 			}
 		}
-		catch(Exception e){
+		catch(IOException e){
+			//System.out.println("/////////////////////////Fucking bitch");
 		}
 		//Parent folder
 		String parentPath = path.substring(0,path.lastIndexOf(File.separator)+1);

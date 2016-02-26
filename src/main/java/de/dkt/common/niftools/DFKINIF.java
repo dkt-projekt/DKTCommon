@@ -45,7 +45,12 @@ public class DFKINIF {
     public static final Property isString = property("isString");
     public static final Property endIndex = property("endIndex");
     public static final Property entity = property("entity");
-    public static final Property keyword = property("keyword");    
+    public static final Property keyword = property("keyword");
+    
+    public static final Property averageLatitude = property("averageLatitude");
+    public static final Property averageLongitude = property("averageLongitude");
+    public static final Property standardDeviationLatitude = property("standardDeviationLatitude");
+    public static final Property standardDeviationLongitude = property("standardDeviationLongitude");
     
 
 
