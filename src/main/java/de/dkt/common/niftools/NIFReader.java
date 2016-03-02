@@ -68,6 +68,22 @@ public class NIFReader {
 		return str;
 	}
 
+	
+	public static String extractMeanDateRange(Model nifModel){
+		String str = null;
+        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
+        boolean textFound = false;
+        while (!textFound) {
+            Resource contextRes = iter.nextStatement().getSubject();
+            Statement isStringStm = contextRes.getProperty(NIF.meanDateRange);
+            if (isStringStm != null) {
+                str = isStringStm.getObject().asLiteral().getString();
+                textFound = true;
+            }
+        }
+		return str;
+	}
+	
 	public static String model2String(Model nifModel, String format) {
 		StringWriter writer = new StringWriter();
 		nifModel.write(writer, format);
@@ -99,6 +115,19 @@ public class NIFReader {
 			//System.out.println(contextRes.getURI());
 			String uri = contextRes.getURI();
 			return uri.substring(0, uri.indexOf('#'));
+		}
+		throw new BadRequestException("No context/document found.");
+	}
+
+	public static int extractEndTotalText(Model nifModel){
+		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
+		while(iter.hasNext()){
+			Resource contextRes = iter.nextStatement().getSubject();
+			//System.out.println(contextRes.getURI());
+			String uri = contextRes.getURI();
+			String sEnd = uri.substring(uri.lastIndexOf(','));
+			int i = Integer.parseInt(sEnd);
+			return i;
 		}
 		throw new BadRequestException("No context/document found.");
 	}

@@ -52,6 +52,8 @@ public class DFKINIF {
     public static final Property standardDeviationLatitude = property("standardDeviationLatitude");
     public static final Property standardDeviationLongitude = property("standardDeviationLongitude");
     
-
+    public static String createDocumentURI(){
+    	return defaultPrefix+"doc"+((int)(Math.random()*9000)+1000);
+    }
 
 }
