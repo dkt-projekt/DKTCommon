@@ -203,6 +203,13 @@ public class NIFWriter {
 		return model;
 	}
 
+	public static void addLanguageAnnotation(Model outModel, String inputText, String documentURI, String language){
+		
+		int endTotalText = inputText.codePointCount(0, inputText.length());
+		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+        Resource documentResource = outModel.getResource(documentUri);
+        outModel.add(documentResource, NIF.language, outModel.createTypedLiteral(language, XSDDatatype.XSDstring));
+	}
 	
 	
 	public static void addDateStats(Model outModel, String inputText, String documentURI, String meanDateRange){

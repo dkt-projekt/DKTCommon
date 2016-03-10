@@ -45,6 +45,7 @@ public class NIF {
     public static final Property stdevDate = property("stdevDate");
 
     public static final Property meanDateRange = property("meanDateRange");
+    public static final Property language = property("language"); //TODO: check NIF vocabulary for language annotation
     //public static final Property geoPoint = property("geoPoint");
     //public static final Property centralGeoPoint = property("centralGeoPoint");
     //public static final Property geoStandardDevs = property("geoStandardDevs");
