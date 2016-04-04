@@ -121,6 +121,26 @@ public class NIFWriter {
         
 	}
 
+	public static void addAnnotationRelation(Model outModel, int startIndex, int endIndex, String text, String sub, String act, String obj){
+		String docURI = NIFReader.extractDocumentURI(outModel);
+		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource spanAsResource = outModel.createResource(spanUri);
+		outModel.add(spanAsResource, RDF.type, NIF.String);
+		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+		// TODO add language to String
+		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		
+		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
+//		outModel.add(spanAsResource, NIF.referenceContext, outModel.createTypedLiteral("ReferenceContextDummy", XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource("http://dkt.dfki.de/entities/relation"));
+		outModel.add(spanAsResource, NIF.relationSubject, outModel.createResource(sub));
+		outModel.add(spanAsResource, NIF.relationAction, outModel.createResource(act));
+		outModel.add(spanAsResource, NIF.relationObject, outModel.createResource(obj));
+        //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
+	}
 	
 	public static void addSpan(Model outModel, Resource documentResource, String inputText, String documentURI,
 			int start2, int end2) {

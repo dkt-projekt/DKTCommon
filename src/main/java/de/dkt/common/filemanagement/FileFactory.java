@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
+import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.UrlResource;
@@ -17,8 +18,11 @@ import de.dkt.common.exceptions.FileNotFoundException;
 
 public class FileFactory {
 
+	static Logger logger = Logger.getLogger(FileFactory.class);
+
 	public static void main(String[] args) throws Exception {
 		File f = FileFactory.generateFileInstance("/Users/jumo04/Documents/DFKI/DKT/dkt-test/testComplete/sesameStorage/testTimelining");
+		System.out.println(f.exists());
 	}
 	
 	public static File generateFileInstance(String path) throws IOException {
@@ -83,7 +87,7 @@ public class FileFactory {
 			}
 		}
 		catch(IOException e){
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 			throw e;
 		}
 	}

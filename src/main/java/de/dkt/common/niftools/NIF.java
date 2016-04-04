@@ -64,4 +64,8 @@ public class NIF {
 //    public static final Property  = property("");
     public static final Property orgType = property("organizationType");
 
+    public static final Property relationSubject = property("relationSubject");
+    public static final Property relationAction = property("relationAction");
+    public static final Property relationObject = property("relationObject");
+
 }
