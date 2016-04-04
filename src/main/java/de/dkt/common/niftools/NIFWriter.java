@@ -97,7 +97,7 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.posTag, outModel.createResource(posTag));
 	}
 	
-	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, List<String> list, String nerType){
+	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, String uri, String nerType){
 		String docURI = NIFReader.extractDocumentURI(outModel);
 		docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
@@ -112,13 +112,29 @@ public class NIFWriter {
 		
 		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
 //		outModel.add(spanAsResource, NIF.referenceContext, outModel.createTypedLiteral("ReferenceContextDummy", XSDDatatype.XSDstring));
-		for (String taIdentRef : list) {
-			outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
-		}
+		
+		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(uri));
+		
 		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
 		
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
         
+	}
+
+	public static void addAnnotationEntitiesWithoutURI(Model outModel, int startIndex, int endIndex, String text, String nerType){
+		String docURI = NIFReader.extractDocumentURI(outModel);
+		docURI = NIFReader.extractDocumentURI(outModel);
+		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource spanAsResource = outModel.createResource(spanUri);
+		outModel.add(spanAsResource, RDF.type, NIF.String);
+		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
+		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+		
 	}
 
 	public static void addAnnotationRelation(Model outModel, int startIndex, int endIndex, String text, String sub, String act, String obj){
@@ -223,6 +239,13 @@ public class NIFWriter {
 		return model;
 	}
 
+	public static void addLanguageAnnotation(Model outModel, String inputText, String documentURI, String language){
+		
+		int endTotalText = inputText.codePointCount(0, inputText.length());
+		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+        Resource documentResource = outModel.getResource(documentUri);
+        outModel.add(documentResource, NIF.language, outModel.createTypedLiteral(language, XSDDatatype.XSDstring));
+	}
 	
 	
 	public static void addDateStats(Model outModel, String inputText, String documentURI, String meanDateRange){
