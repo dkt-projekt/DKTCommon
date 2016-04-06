@@ -7,10 +7,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.NodeIterator;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -147,7 +151,6 @@ public class NIFReader {
 
 	public static String extractDocumentPath(Model nifModel){
 		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
-      
 		while(iter.hasNext()){
 			Resource contextRes = iter.nextStatement().getSubject();
 			Statement st = contextRes.getProperty(DFKINIF.DocumentPath);
@@ -196,6 +199,18 @@ public class NIFReader {
         	return null;
         }
 		return list;
+	}
+	
+	public static String extractTaIdentRefWithEntityURI(Model nifModel, String entityURI){
+		
+		Resource r = ResourceFactory.createResource(entityURI);
+		NodeIterator nodes = nifModel.listObjectsOfProperty(r, ITSRDF.taIdentRef);
+		String taIdentRef = null;
+		while(nodes.hasNext()){
+			RDFNode node = nodes.next();
+		   taIdentRef = node.asResource().getURI();
+		}
+		return taIdentRef;
 	}
 
 	public static Map<String,Map<String,String>> extractEntitiesExtended(Model nifModel){
