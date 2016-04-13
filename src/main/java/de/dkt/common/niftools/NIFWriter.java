@@ -94,7 +94,7 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
-		outModel.add(spanAsResource, NIF.posTag, outModel.createResource(posTag));
+		outModel.add(spanAsResource, NIF.posTag, outModel.createTypedLiteral(posTag, XSDDatatype.XSDstring));
 	}
 	
 	public static void addAnnotationEntities(Model outModel, int startIndex, int endIndex, String text, String uri, String nerType){
