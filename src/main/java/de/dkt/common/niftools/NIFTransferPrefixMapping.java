@@ -1,4 +1,4 @@
-package eu.freme.broker.niftools;
+package de.dkt.common.niftools;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.shared.PrefixMapping;

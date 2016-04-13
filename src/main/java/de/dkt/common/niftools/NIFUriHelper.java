@@ -1,4 +1,4 @@
-package eu.freme.broker.niftools;
+package de.dkt.common.niftools;
 
 public class NIFUriHelper {
 
