@@ -125,24 +125,24 @@ public class DKTCommonTest {
 ////		Assert.assertTrue("The generated file instance does not exists and it should do.", f.exists());
 ////	}
 
-	@Test(expected=BadRequestException.class)
-	public void testAuthentication1() throws Exception {
-		AuthenticationService as = UserAuthentication.getAuthenticationService("file", "lucene", "indexName", true);
-		Assert.assertTrue("The generated authentication service instance is not FileAuthenticationService and it should do.", as instanceof FileAuthenticationService);
-		
-		AuthenticationService as2 = UserAuthentication.getAuthenticationService("database", "", "", true);
-	}
-	
-	@Test
-	public void testAuthentication2() throws Exception {
-		boolean au1 = UserAuthentication.authenticateUser("user", "password", "file", "lucene", "indexName", true);
-		Assert.assertFalse("The user should not be authenticated.", au1);
-
-		boolean ua2 = UserAuthentication.addCredentials("max", "mustermann", "", "file", "lucene", "indexName",true);
-		Assert.assertTrue("User credentials should be added.", ua2);
-
-		boolean ua3 = UserAuthentication.checkAndAddCredentials("max", "mustermann", "max2", "mustermann2", "", "file", "lucene", "indexName");
-		Assert.assertTrue("User credentials should be added.", ua3);
-	}
+//	@Test(expected=BadRequestException.class)
+//	public void testAuthentication1() throws Exception {
+//		AuthenticationService as = UserAuthentication.getAuthenticationService("file", "lucene", "indexName", true);
+//		Assert.assertTrue("The generated authentication service instance is not FileAuthenticationService and it should do.", as instanceof FileAuthenticationService);
+//		
+//		AuthenticationService as2 = UserAuthentication.getAuthenticationService("database", "", "", true);
+//	}
+//	
+//	@Test
+//	public void testAuthentication2() throws Exception {
+//		boolean au1 = UserAuthentication.authenticateUser("user", "password", "file", "lucene", "indexName", true);
+//		Assert.assertFalse("The user should not be authenticated.", au1);
+//
+//		boolean ua2 = UserAuthentication.addCredentials("max", "mustermann", "", "file", "lucene", "indexName",true);
+//		Assert.assertTrue("User credentials should be added.", ua2);
+//
+//		boolean ua3 = UserAuthentication.checkAndAddCredentials("max", "mustermann", "max2", "mustermann2", "", "file", "lucene", "indexName");
+//		Assert.assertTrue("User credentials should be added.", ua3);
+//	}
 
 }
