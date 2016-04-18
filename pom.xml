@@ -135,5 +135,6 @@
 		<connection>scm:git:git@github.com:dkt-projekt/DKTCommon.git</connection>
 		<url>scm:git:git@github.com/dkt-projekt/DKTCommon.git</url>
 		<developerConnection>scm:git:git@github.com:dkt-projekt/DKTCommon.git</developerConnection>
+		<tag>HEAD</tag>
 	</scm>
 </project>
