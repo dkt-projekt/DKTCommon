@@ -295,6 +295,15 @@ public class NIFWriter {
         outModel.add(documentResource, NIF.documentClassification, outModel.createTypedLiteral(label, XSDDatatype.XSDstring));
 	}
 
+	public static void addTranslation(Model outModel, String translation){
+		String inputText = NIFReader.extractIsString(outModel);
+		String documentURI = NIFReader.extractDocumentURI(outModel);
+		int endTotalText = inputText.codePointCount(0, inputText.length());
+		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+        Resource documentResource = outModel.getResource(documentUri);
+        outModel.add(documentResource, NIF.translation, outModel.createTypedLiteral(translation, XSDDatatype.XSDstring));
+	}
+
 	public static void addTopicModelling(Model outModel, String inputText, String documentURI, String label){
 		int endTotalText = inputText.codePointCount(0, inputText.length());
 		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();

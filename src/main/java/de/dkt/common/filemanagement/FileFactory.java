@@ -87,7 +87,7 @@ public class FileFactory {
 			}
 		}
 		catch(IOException e){
-			logger.error(e.getMessage(), e);
+			logger.error(e.getMessage());
 			throw e;
 		}
 	}

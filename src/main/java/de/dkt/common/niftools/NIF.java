@@ -69,4 +69,6 @@ public class NIF {
     public static final Property relationAction = property("relationAction");
     public static final Property relationObject = property("relationObject");
 
+    public static final Property translation = property("translation");
+
 }
