@@ -19,7 +19,17 @@ public class ParameterChecker {
             throw new BadRequestException("No "+message+" param specified");
     	}
     }
-	
+
+	public static void checkAnyNotNullOrEmpty (String message,Logger logger,String... args) throws BadRequestException {
+	    for (String arg : args) {
+			if( arg!=null && !arg.equals("") ){
+				return;
+			}
+	    }
+		logger.error("No "+message+" param specified");
+        throw new BadRequestException("No "+message+" param specified");
+    }
+
 	public static void checkInList (String param, String list, String message, Logger logger) throws BadRequestException {
 		checkNotNullOrEmpty(param, message, logger);
 		String parts[] = list.split(";");
