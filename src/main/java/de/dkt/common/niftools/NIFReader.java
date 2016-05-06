@@ -184,13 +184,13 @@ public class NIFReader {
         ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
         while (iterEntities.hasNext()) {
             Resource r = iterEntities.nextResource();
-            com.hp.hpl.jena.rdf.model.Statement st = r.getProperty(NIF.entity);
+            Statement st = r.getProperty(NIF.entity);
             String stringSt = ( st!=null ) ? st.getObject().asResource().getURI() : null;
 //            System.out.println("1."+st.getObject().asResource().getURI());
-            com.hp.hpl.jena.rdf.model.Statement st2 = r.getProperty(NIF.anchorOf);
+            Statement st2 = r.getProperty(NIF.anchorOf);
             String stringSt2 = ( st2!=null ) ? st2.getLiteral().getString() : null;
 //            System.out.println("7."+st2.getLiteral().getString());
-            com.hp.hpl.jena.rdf.model.Statement st3 = r.getProperty(ITSRDF.taIdentRef);
+            Statement st3 = r.getProperty(ITSRDF.taIdentRef);
             String stringSt3 = ( st3!=null ) ? st3.getObject().asResource().getURI() : null;
             String[] information = {stringSt3,stringSt2,stringSt};
             list.add(information);
@@ -202,23 +202,20 @@ public class NIFReader {
 	}
 	
 	public static List<String[]> extractEntityIndices(Model nifModel){
+		
 		List<String[]> list = new LinkedList<String[]>();
-				
 		ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
-        while (iterEntities.hasNext()) {
+		while (iterEntities.hasNext()) {
             Resource r = iterEntities.nextResource();
-            System.out.println("DEBUGGINg r here:" + r);
-            com.hp.hpl.jena.rdf.model.Statement st = r.getProperty(NIF.entity);
+            Statement st = r.getProperty(NIF.entity);
             String stringSt = ( st!=null ) ? st.getObject().asResource().getURI() : null;
-//            System.out.println("1."+st.getObject().asResource().getURI());
-            com.hp.hpl.jena.rdf.model.Statement st2 = r.getProperty(NIF.anchorOf);
+            Statement st2 = r.getProperty(NIF.anchorOf);
             String stringSt2 = ( st2!=null ) ? st2.getLiteral().getString() : null;
-//            System.out.println("7."+st2.getLiteral().getString());
-            com.hp.hpl.jena.rdf.model.Statement st3 = r.getProperty(ITSRDF.taIdentRef);
+            Statement st3 = r.getProperty(ITSRDF.taIdentRef);
             String stringSt3 = ( st3!=null ) ? st3.getObject().asResource().getURI() : null;
-            com.hp.hpl.jena.rdf.model.Statement st4 = r.getProperty(NIF.beginIndex);
+            Statement st4 = r.getProperty(NIF.beginIndex);
             String stringSt4 = ( st4!=null ) ? st4.getLiteral().getString() : null;
-            com.hp.hpl.jena.rdf.model.Statement st5 = r.getProperty(NIF.endIndex);
+            Statement st5 = r.getProperty(NIF.endIndex);
             String stringSt5 = ( st5!=null ) ? st5.getLiteral().getString() : null;
             String[] information = {stringSt3,stringSt2,stringSt,stringSt4,stringSt5};
             list.add(information);

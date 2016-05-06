@@ -279,6 +279,12 @@ public class NIFWriter {
 		nifModel.add(entityResource, prop, nifModel.createTypedLiteral(info, dataType));
 	}
 	
+	public static void addEntityURI(Model nifModel, int beginIndex, int endIndex, String documentURI, String entURI){
+		String entityNIFURI = new StringBuilder().append(documentURI).append("#char=").append(Integer.toString(beginIndex)).append(',').append(Integer.toString(endIndex)).toString();
+		Resource entityResource = nifModel.getResource(entityNIFURI);
+		nifModel.add(entityResource, ITSRDF.taIdentRef, nifModel.createResource(entURI));
+	}
+	
 	public static void addLuceneIndexingInformation(Model outModel, String inputText, String documentURI, String indexName, String indexPath){
 		
 		int endTotalText = inputText.codePointCount(0, inputText.length());
