@@ -19,5 +19,8 @@ public class DBO {
 	
     public static final Property birthDate = property("birthDate");
     public static final Property deathDate = property("deathDate");
+    public static final Property person = property("Person");
+    public static final Property location = property("Location");
+    public static final Property organisation = property("Organisation");
 	
 }

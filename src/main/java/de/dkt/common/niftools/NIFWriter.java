@@ -66,8 +66,41 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
-		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
-        //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
+		//outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+        outModel.add(spanAsResource, ITSRDF.taClassRef, nerType);
+        
+	}
+	
+	private static String stringDateXSDDateTimeFormatter(String date){
+		String year = date.substring(0, 4);
+		String month = date.substring(4, 6);
+		String day = date.substring(6, 8);
+		String hour = date.substring(8,10);
+		String minute = date.substring(10, 12);
+		String second = date.substring(12, 14);
+		return String.format("%s-%s-%sT%s:%s:%s", year, month, day, hour, minute, second);
+	}
+	
+	public static void addTemporalEntity(Model outModel, int startIndex, int endIndex, String text, String normalization){
+		String docURI = NIFReader.extractDocumentURI(outModel);
+		docURI = NIFReader.extractDocumentURI(outModel);
+		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource spanAsResource = outModel.createResource(spanUri);
+		outModel.add(spanAsResource, RDF.type, NIF.String);
+		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+		
+		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		
+		// convert normalization to xsd:dateTime notation
+		String[] norm = normalization.split("_");
+		String intervalStart = stringDateXSDDateTimeFormatter(norm[0]);
+		String intervalEnd = stringDateXSDDateTimeFormatter(norm[1]);
+		outModel.add(spanAsResource, TIME.intervalStarts, outModel.createTypedLiteral(intervalStart, XSDDatatype.XSDdateTime));
+		outModel.add(spanAsResource, TIME.intervalFinishes, outModel.createTypedLiteral(intervalEnd, XSDDatatype.XSDdateTime));
+        outModel.add(spanAsResource, ITSRDF.taClassRef, TIME.temporalEntity);
         
 	}
 
@@ -115,8 +148,8 @@ public class NIFWriter {
 		
 		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(uri));
 		
-		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
-		
+		//outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+		outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource(nerType));
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
         
 	}
@@ -133,7 +166,8 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
-		outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+		//outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+		outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource(nerType));
 		
 	}
 
@@ -215,6 +249,7 @@ public class NIFWriter {
         Map<String,String> prefixes = new HashMap<String, String>();
         prefixes.put("xsd", "<http://www.w3.org/2001/XMLSchema#>");
         prefixes.put("nif", "<http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>");
+        prefixes.put("dktnif", "http://dkt.dfki.de/ontologies/nif#");
         //prefixes.put("dfkinif", "<http://persistence.dfki.de/ontologies/nif#>");
         //prefixes.put("dbpedia-fr", "<http://fr.dbpedia.org/resource/>");
         //prefixes.put("dbc", "<http://dbpedia.org/resource/Category:>");
@@ -253,22 +288,27 @@ public class NIFWriter {
 		int endTotalText = inputText.codePointCount(0, inputText.length());
 		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
         Resource documentResource = outModel.getResource(documentUri);
-        outModel.add(documentResource, NIF.meanDateRange, outModel.createTypedLiteral(meanDateRange, XSDDatatype.XSDstring));
+        String[] norm = meanDateRange.split("_");
+		String intervalStart = stringDateXSDDateTimeFormatter(norm[0]);
+		String intervalEnd = stringDateXSDDateTimeFormatter(norm[1]);
+		outModel.add(documentResource, DKTNIF.meanDateStart, outModel.createTypedLiteral(intervalStart, XSDDatatype.XSDdateTime));
+		outModel.add(documentResource, DKTNIF.meanDateEnd, outModel.createTypedLiteral(intervalEnd, XSDDatatype.XSDdateTime));
+        //outModel.add(documentResource, NIF.meanDateRange, outModel.createTypedLiteral(meanDateRange, XSDDatatype.XSDstring));
 	}
 	
 	//public static void addGeoStats(Model outModel, String inputText, String documentURI, String centralGeoPoint, String geoStdDevs){
 	public static void addGeoStats(Model outModel, String inputText, Double avgLatitude, Double avgLongitude, Double stdDevLatitude, Double stdDevLongitude, String docURI){
 		
 		// add prefix here
-		addPrefixToModel(outModel, "dfkinif", DFKINIF.uri);
+		//addPrefixToModel(outModel, "dfkinif", DKTNIF.uri);
 		int endTotalText = inputText.codePointCount(0, inputText.length());
 		String documentUri = new StringBuilder().append(docURI).append("#char=").append("0").append(',').append(endTotalText).toString();
         Resource documentResource = outModel.getResource(documentUri);
         //outModel.add(documentResource, NIF.centralGeoPoint, outModel.createTypedLiteral(centralGeoPoint, XSDDatatype.XSDstring));
-        outModel.add(documentResource, DFKINIF.averageLatitude, outModel.createTypedLiteral(avgLatitude, XSDDatatype.XSDdouble));
-        outModel.add(documentResource, DFKINIF.averageLongitude, outModel.createTypedLiteral(avgLongitude, XSDDatatype.XSDdouble));
-        outModel.add(documentResource, DFKINIF.standardDeviationLatitude, outModel.createTypedLiteral(stdDevLatitude, XSDDatatype.XSDdouble));
-        outModel.add(documentResource, DFKINIF.standardDeviationLongitude, outModel.createTypedLiteral(stdDevLongitude, XSDDatatype.XSDdouble));
+        outModel.add(documentResource, DKTNIF.averageLatitude, outModel.createTypedLiteral(avgLatitude, XSDDatatype.XSDdouble));
+        outModel.add(documentResource, DKTNIF.averageLongitude, outModel.createTypedLiteral(avgLongitude, XSDDatatype.XSDdouble));
+        outModel.add(documentResource, DKTNIF.standardDeviationLatitude, outModel.createTypedLiteral(stdDevLatitude, XSDDatatype.XSDdouble));
+        outModel.add(documentResource, DKTNIF.standardDeviationLongitude, outModel.createTypedLiteral(stdDevLongitude, XSDDatatype.XSDdouble));
         //outModel.add(documentResource, NIF.geoStandardDevs, outModel.createTypedLiteral(geoStdDevs, XSDDatatype.XSDstring));
 	}
 

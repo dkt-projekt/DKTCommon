@@ -57,36 +57,36 @@ public class NIFReader {
 		return str;
 	}
 	
-	public static String extractMeanDate(Model nifModel){
-		String str = null;
-        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
-        boolean textFound = false;
-        while (!textFound) {
-            Resource contextRes = iter.nextStatement().getSubject();
-            Statement isStringStm = contextRes.getProperty(NIF.meanDate);
-            if (isStringStm != null) {
-                str = isStringStm.getObject().asLiteral().getString();
-                textFound = true;
-            }
-        }
-		return str;
-	}
-
-	
-	public static String extractMeanDateRange(Model nifModel){
-		String str = null;
-        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
-        boolean textFound = false;
-        while (!textFound) {
-            Resource contextRes = iter.nextStatement().getSubject();
-            Statement isStringStm = contextRes.getProperty(NIF.meanDateRange);
-            if (isStringStm != null) {
-                str = isStringStm.getObject().asLiteral().getString();
-                textFound = true;
-            }
-        }
-		return str;
-	}
+//	public static String extractMeanDate(Model nifModel){
+//		String str = null;
+//        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
+//        boolean textFound = false;
+//        while (!textFound) {
+//            Resource contextRes = iter.nextStatement().getSubject();
+//            Statement isStringStm = contextRes.getProperty(NIF.meanDate);
+//            if (isStringStm != null) {
+//                str = isStringStm.getObject().asLiteral().getString();
+//                textFound = true;
+//            }
+//        }
+//		return str;
+//	}
+//
+//	
+//	public static String extractMeanDateRange(Model nifModel){
+//		String str = null;
+//        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
+//        boolean textFound = false;
+//        while (!textFound) {
+//            Resource contextRes = iter.nextStatement().getSubject();
+//            Statement isStringStm = contextRes.getProperty(NIF.meanDateRange);
+//            if (isStringStm != null) {
+//                str = isStringStm.getObject().asLiteral().getString();
+//                textFound = true;
+//            }
+//        }
+//		return str;
+//	}
 	
 	public static String model2String(Model nifModel, String format) {
 		StringWriter writer = new StringWriter();
@@ -102,7 +102,8 @@ public class NIFReader {
 
 	public static String extractTaIdentRefFromModel(Model nifModel){
 		String ref = null;
-		ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		//ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
         while (iterEntities.hasNext()) {
             Resource r = iterEntities.nextResource();
             com.hp.hpl.jena.rdf.model.Statement st3 = r.getProperty(ITSRDF.taIdentRef);
@@ -153,7 +154,7 @@ public class NIFReader {
 		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
 		while(iter.hasNext()){
 			Resource contextRes = iter.nextStatement().getSubject();
-			Statement st = contextRes.getProperty(DFKINIF.DocumentPath);
+			Statement st = contextRes.getProperty(DKTNIF.DocumentPath);
 			if(st!=null){
 	//			System.out.println(contextRes.getURI());
 				String uri = st.getObject().asResource().getURI();
@@ -168,7 +169,7 @@ public class NIFReader {
       
 		while(iter.hasNext()){
 			Resource contextRes = iter.nextStatement().getSubject();
-			Statement st = contextRes.getProperty(DFKINIF.DocumentPath);
+			Statement st = contextRes.getProperty(DKTNIF.DocumentPath);
 			if(st!=null){
 	//			System.out.println(contextRes.getURI());
 				String uri = st.getObject().asResource().getURI();
@@ -181,10 +182,12 @@ public class NIFReader {
 	public static List<String[]> extractEntities(Model nifModel){
 		List<String[]> list = new LinkedList<String[]>();
 				
-        ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+        //ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
         while (iterEntities.hasNext()) {
             Resource r = iterEntities.nextResource();
-            Statement st = r.getProperty(NIF.entity);
+            //Statement st = r.getProperty(NIF.entity);
+            Statement st = r.getProperty(ITSRDF.taClassRef);
             String stringSt = ( st!=null ) ? st.getObject().asResource().getURI() : null;
 //            System.out.println("1."+st.getObject().asResource().getURI());
             Statement st2 = r.getProperty(NIF.anchorOf);
@@ -204,10 +207,12 @@ public class NIFReader {
 	public static List<String[]> extractEntityIndices(Model nifModel){
 		
 		List<String[]> list = new LinkedList<String[]>();
-		ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		//ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
 		while (iterEntities.hasNext()) {
             Resource r = iterEntities.nextResource();
-            Statement st = r.getProperty(NIF.entity);
+            //Statement st = r.getProperty(NIF.entity);
+            Statement st = r.getProperty(ITSRDF.taClassRef);
             String stringSt = ( st!=null ) ? st.getObject().asResource().getURI() : null;
             Statement st2 = r.getProperty(NIF.anchorOf);
             String stringSt2 = ( st2!=null ) ? st2.getLiteral().getString() : null;
@@ -241,7 +246,8 @@ public class NIFReader {
 	public static Map<String,Map<String,String>> extractEntitiesExtended(Model nifModel){
 		Map<String,Map<String,String>> list = new HashMap<String,Map<String,String>>();
 				
-        ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+        //ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
         while (iterEntities.hasNext()) {
     		Map<String,String> map = new HashMap<String,String>();
             Resource r = iterEntities.nextResource();
@@ -298,29 +304,29 @@ public class NIFReader {
 	}
 
 	
-	public static List<String[]> extractTempStats(Model nifModel){
-		List<String[]> list = new LinkedList<String[]>();
-				
-//	      nif:meanDate "19360621060000"^^xsd:string ;
-//	      nif:stdevDate "96"^^xsd:string .
-	    
-        ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.meanDate);
-        while (iterEntities.hasNext()) {
-            Resource r = iterEntities.nextResource();
-            Statement st = r.getProperty(NIF.meanDate);
-            String stringSt = ( st!=null ) ? st.getLiteral().getString() : null;
-            Statement st2 = r.getProperty(NIF.stdevDate);
-            String stringSt2 = ( st2!=null ) ? st2.getLiteral().getString() : null;
-//            System.out.println("7."+st2.getLiteral().getString());
-            String [] information = {stringSt,stringSt2};
-            list.add(information);
-        }
-        if(list.isEmpty()){
-        	return null;
-        }
-		return list;
-	}
-	
+//	public static List<String[]> extractTempStats(Model nifModel){
+//		List<String[]> list = new LinkedList<String[]>();
+//				
+////	      nif:meanDate "19360621060000"^^xsd:string ;
+////	      nif:stdevDate "96"^^xsd:string .
+//	    
+//        ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.meanDate);
+//        while (iterEntities.hasNext()) {
+//            Resource r = iterEntities.nextResource();
+//            Statement st = r.getProperty(NIF.meanDate);
+//            String stringSt = ( st!=null ) ? st.getLiteral().getString() : null;
+//            Statement st2 = r.getProperty(NIF.stdevDate);
+//            String stringSt2 = ( st2!=null ) ? st2.getLiteral().getString() : null;
+////            System.out.println("7."+st2.getLiteral().getString());
+//            String [] information = {stringSt,stringSt2};
+//            list.add(information);
+//        }
+//        if(list.isEmpty()){
+//        	return null;
+//        }
+//		return list;
+//	}
+//	
 	public static Model extractModelFromString(String content) throws Exception {
 		//Model outModel = ModelFactory.createDefaultModel();
 		Model outModel = NIFWriter.initializeOutputModel();
