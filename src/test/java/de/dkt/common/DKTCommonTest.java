@@ -23,7 +23,7 @@ public class DKTCommonTest {
 
 	TestHelper testHelper;
 	ValidationHelper validationHelper;
-	UserAuthentication userAuth;
+//	UserAuthentication userAuth;
 
 	@Before
 	public void setup() {
@@ -31,9 +31,14 @@ public class DKTCommonTest {
 				.getContext(TestConstants.pathToPackage);
 		testHelper = context.getBean(TestHelper.class);
 		validationHelper = context.getBean(ValidationHelper.class);
-		userAuth = context.getBean(UserAuthentication.class);
+//		userAuth = context.getBean(UserAuthentication.class);
 	}
 
+	
+	@Test
+	public void testSanityCheck() throws IOException,Exception {
+	}
+	
 	/**
 	 * TEST FOR FILEMANAGEMENET
 	 */
@@ -134,17 +139,17 @@ public class DKTCommonTest {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	@Test
-	public void test9_DKTCommonFileFactoryHttpFile() throws IOException,
-			Exception {
-		String filePath = "http://dev.digitale-kuratierung.de/data/test.html";
-		//Check classpath resources
-		File f = FileFactory.generateFileInstance(filePath);
-		Assert.assertNotNull("The generated file instance is null and should not be.", f);
-		Assert.assertTrue("The generated file instance does not exists and it should do.", f.exists());
-		
-		
-	}
+//	@Test
+//	public void test9_DKTCommonFileFactoryHttpFile() throws IOException,
+//			Exception {
+//		String filePath = "http://dev.digitale-kuratierung.de/data/test.html";
+//		//Check classpath resources
+//		File f = FileFactory.generateFileInstance(filePath);
+//		Assert.assertNotNull("The generated file instance is null and should not be.", f);
+//		Assert.assertTrue("The generated file instance does not exists and it should do.", f.exists());
+//		
+//		
+//	}
 
 	/**
 	 * TEST FOR AUTHENTICATION
@@ -170,16 +175,16 @@ public class DKTCommonTest {
 //		Assert.assertTrue("User credentials should be added.", ua3);
 //	}
 
-	@Test
-	public void test13_AuthenticationDDBB_RightAccess() throws Exception {
-		boolean ua2 = userAuth.authenticateUser("dkttest", "dkttest", "database", "lucene", "lucenetest", false);
-		Assert.assertTrue("User credentials should be authenticated.", ua2);
-	}
-
-	@Test
-	public void test13_AuthenticationDDBB_WrongAccess() throws Exception {
-		boolean ua2 = userAuth.authenticateUser("dkttest", "dkttest2", "database", "lucene", "lucenetest", false);
-		Assert.assertFalse("User credentials should be authenticated.", ua2);
-	}
+//	@Test
+//	public void test13_AuthenticationDDBB_RightAccess() throws Exception {
+//		boolean ua2 = userAuth.authenticateUser("dkttest", "dkttest", "database", "lucene", "lucenetest", false);
+//		Assert.assertTrue("User credentials should be authenticated.", ua2);
+//	}
+//
+//	@Test
+//	public void test13_AuthenticationDDBB_WrongAccess() throws Exception {
+//		boolean ua2 = userAuth.authenticateUser("dkttest", "dkttest2", "database", "lucene", "lucenetest", false);
+//		Assert.assertFalse("User credentials should be authenticated.", ua2);
+//	}
 
 }
