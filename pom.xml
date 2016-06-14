@@ -10,8 +10,13 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 	
+  <parent>
+  	<groupId>eu.freme.e-services</groupId>
+  	<artifactId>e-service-parent</artifactId>
+  	<version>0.1-SNAPSHOT</version>
+  </parent>
+
 	<dependencies>
-	
 	<dependency>
   		<groupId>eu.freme.bservices</groupId>
   		<artifactId>test-helper</artifactId>
@@ -29,6 +34,11 @@
 		<version>2.11.2</version>
 	</dependency>
 
+	<dependency>
+		<groupId>org.scala-lang</groupId>
+		<artifactId>scala-library</artifactId>
+		<version>2.11.0</version>
+	</dependency>
 	</dependencies>	
   
   <build>

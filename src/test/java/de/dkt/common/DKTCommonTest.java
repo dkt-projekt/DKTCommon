@@ -5,20 +5,39 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+import org.springframework.context.ApplicationContext;
 
-import de.dkt.common.authentication.AuthenticationService;
-import de.dkt.common.authentication.FileAuthenticationService;
+import com.mashape.unirest.http.exceptions.UnirestException;
+
 import de.dkt.common.authentication.UserAuthentication;
 import de.dkt.common.filemanagement.FileFactory;
-import eu.freme.common.exception.BadRequestException;
+import eu.freme.bservices.testhelper.TestHelper;
+import eu.freme.bservices.testhelper.ValidationHelper;
+import eu.freme.bservices.testhelper.api.IntegrationTestSetup;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DKTCommonTest {
+
+	TestHelper testHelper;
+	ValidationHelper validationHelper;
+	UserAuthentication userAuth;
 
 	@Before
 	public void setup() {
+		ApplicationContext context = IntegrationTestSetup
+				.getContext(TestConstants.pathToPackage);
+		testHelper = context.getBean(TestHelper.class);
+		validationHelper = context.getBean(ValidationHelper.class);
+		userAuth = context.getBean(UserAuthentication.class);
 	}
-//	
+
+	/**
+	 * TEST FOR FILEMANAGEMENET
+	 */
+
 //	/**
 //	 * Check classpath file instance generation
 //	 * @throws UnirestException
@@ -109,24 +128,30 @@ public class DKTCommonTest {
 //		Assert.assertTrue("The generated file instance is not a directory and it should be.", f4.isDirectory());
 //	}
 //	
-////	/**
-////	 * Check http filesystem file instance generation
-////	 * @throws UnirestException
-////	 * @throws IOException
-////	 * @throws Exception
-////	 */
-////	@Test
-////	public void testDKTCommonFileFactoryHttpFile() throws IOException,
-////			Exception {
-////		String filePath = "http://v35731.1blu.de/resources/documents/prueba101.txt";
-////		//Check classpath resources
-////		File f = FileFactory.generateFileInstance(filePath);
-////		Assert.assertNotNull("The generated file instance is null and should not be.", f);
-////		Assert.assertTrue("The generated file instance does not exists and it should do.", f.exists());
-////	}
+	/**
+	 * Check http filesystem file instance generation
+	 * @throws UnirestException
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	@Test
+	public void test9_DKTCommonFileFactoryHttpFile() throws IOException,
+			Exception {
+		String filePath = "http://dev.digitale-kuratierung.de/data/test.html";
+		//Check classpath resources
+		File f = FileFactory.generateFileInstance(filePath);
+		Assert.assertNotNull("The generated file instance is null and should not be.", f);
+		Assert.assertTrue("The generated file instance does not exists and it should do.", f.exists());
+		
+		
+	}
+
+	/**
+	 * TEST FOR AUTHENTICATION
+	 */
 
 //	@Test(expected=BadRequestException.class)
-//	public void testAuthentication1() throws Exception {
+//	public void test11_Authentication1() throws Exception {
 //		AuthenticationService as = UserAuthentication.getAuthenticationService("file", "lucene", "indexName", true);
 //		Assert.assertTrue("The generated authentication service instance is not FileAuthenticationService and it should do.", as instanceof FileAuthenticationService);
 //		
@@ -134,7 +159,7 @@ public class DKTCommonTest {
 //	}
 //	
 //	@Test
-//	public void testAuthentication2() throws Exception {
+//	public void test12_Authentication2() throws Exception {
 //		boolean au1 = UserAuthentication.authenticateUser("user", "password", "file", "lucene", "indexName", true);
 //		Assert.assertFalse("The user should not be authenticated.", au1);
 //
@@ -144,5 +169,17 @@ public class DKTCommonTest {
 //		boolean ua3 = UserAuthentication.checkAndAddCredentials("max", "mustermann", "max2", "mustermann2", "", "file", "lucene", "indexName");
 //		Assert.assertTrue("User credentials should be added.", ua3);
 //	}
+
+	@Test
+	public void test13_AuthenticationDDBB_RightAccess() throws Exception {
+		boolean ua2 = userAuth.authenticateUser("dkttest", "dkttest", "database", "lucene", "lucenetest", false);
+		Assert.assertTrue("User credentials should be authenticated.", ua2);
+	}
+
+	@Test
+	public void test13_AuthenticationDDBB_WrongAccess() throws Exception {
+		boolean ua2 = userAuth.authenticateUser("dkttest", "dkttest2", "database", "lucene", "lucenetest", false);
+		Assert.assertFalse("User credentials should be authenticated.", ua2);
+	}
 
 }

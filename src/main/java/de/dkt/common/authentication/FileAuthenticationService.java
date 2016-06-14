@@ -69,7 +69,7 @@ public class FileAuthenticationService extends AuthenticationService implements 
 				return false;
 			}
 		}
-		list.add(new AuthenticationInformation(user, password, type));
+		list.add(new AuthenticationInformation(user, password, type, service, serviceName));
 		return updateCredentialsFile();
 	}
 	

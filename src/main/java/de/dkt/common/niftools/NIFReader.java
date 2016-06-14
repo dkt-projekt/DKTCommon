@@ -100,6 +100,7 @@ public class NIFReader {
 		return writer.toString();
 	}
 
+	//TODO maybe delete this method because it only returns the last itsIdentref it finds.
 	public static String extractTaIdentRefFromModel(Model nifModel){
 		String ref = null;
 		//ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
@@ -277,6 +278,36 @@ public class NIFReader {
 		return list;
 	}
 
+	public static List<String> extractTaIdentRefsFromModel(Model nifModel){
+		List<String> refs = new LinkedList<String>();
+		//ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taIdentRef);
+        while (iterEntities.hasNext()) {
+            Resource r = iterEntities.nextResource();
+            com.hp.hpl.jena.rdf.model.Statement st3 = r.getProperty(ITSRDF.taIdentRef);
+            String ref = ( st3!=null ) ? st3.getObject().asResource().getURI() : null;
+            if(ref!=null){
+            	refs.add(ref);
+            }
+        }
+        return refs;
+	}
+	
+	public static List<String> extractTaClassRefsFromModel(Model nifModel){
+		List<String> refs = new LinkedList<String>();
+		//ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
+        while (iterEntities.hasNext()) {
+            Resource r = iterEntities.nextResource();
+            com.hp.hpl.jena.rdf.model.Statement st3 = r.getProperty(ITSRDF.taClassRef);
+            String ref = ( st3!=null ) ? st3.getObject().asResource().getURI() : null;
+            if(ref!=null){
+            	refs.add(ref);
+            }
+        }
+        return refs;
+	}
+	
 	public static Map<String,String> extractDocumentInformation(Model nifModel){
 		Map<String,String> map = new HashMap<String,String>();
 		

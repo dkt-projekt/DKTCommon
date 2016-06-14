@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
@@ -21,18 +23,30 @@ public class FileFactory {
 	static Logger logger = Logger.getLogger(FileFactory.class);
 
 	public static void main(String[] args) throws Exception {
-		File f = FileFactory.generateFileInstance("/Users/jumo04/Documents/DFKI/DKT/dkt-test/testComplete/sesameStorage/testTimelining");
+//		File f = FileFactory.generateFileInstance("/Users/jumo04/Documents/DFKI/DKT/dkt-test/testComplete/sesameStorage/testTimelining");
+		File f = FileFactory.generateFileInstance("http://dev.digitale-kuratierung.de/data/test.html");
 		System.out.println(f.exists());
 	}
 	
 	public static File generateFileInstance(String path) throws IOException {
-		
 		try{
 			//Test if it is http file
 			if(path.startsWith("http")){
-				UrlResource ur = new UrlResource(path);
-				if(ur!=null && ur.exists()){
-					return ur.getFile();
+				URL u = new URL(path);
+				UrlResource ur = new UrlResource(u);
+				InputStream is = ur.getInputStream();
+				if(is!=null){
+					File f2 = File.createTempFile("Tmp_", "");
+					BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f2), "utf-8"));
+					BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
+					String line = br.readLine();
+					while(line!=null){
+						bw.write(line+"\n");
+						line = br.readLine();
+					}
+					br.close();
+					bw.close();
+					return f2;
 				}
 				else{
 					throw new IOException("HTTP file not found or not accesible.");
@@ -108,16 +122,16 @@ public class FileFactory {
 		
 		if(path.startsWith("http")){
 			//TODO HTTP file generation not implemented yet.
-			throw new IOException("HTTP file generation not implemented yet.");
+			throw new IOException("HTTP file generation not available yet.");
 		}
 		else if(path.startsWith("ftp")){
 			//TODO FTP file generation not implemented yet.
-			throw new IOException("FTP file generation not implemented yet.");
+			throw new IOException("FTP file generation not available yet.");
 		}
-		else if(path.startsWith("file:")){
-			//TODO FTP file generation not implemented yet.
-			throw new IOException("NETWORK file generation not implemented yet.");
-		}
+//		else if(path.startsWith("file:")){
+//			//TODO FTP file generation not implemented yet.
+//			throw new IOException("NETWORK file generation not implemented yet.");
+//		}
 		else{
 //				System.out.println(parentPath);
 			//The rest of the possibilities: classpath, filesystem or network storage
@@ -190,15 +204,15 @@ public class FileFactory {
 			
 			if(path.startsWith("http")){
 				//TODO HTTP file generation not implemented yet.
-				throw new IOException("HTTP file generation not implemented yet.");
+				throw new IOException("HTTP file generation not available yet.");
 			}
 			else if(path.startsWith("ftp")){
 				//TODO FTP file generation not implemented yet.
-				throw new IOException("FTP file generation not implemented yet.");
+				throw new IOException("FTP file generation not available yet.");
 			}
 			else if(path.startsWith("file:")){
 				//TODO FTP file generation not implemented yet.
-				throw new IOException("NETWORK file generation not implemented yet.");
+				throw new IOException("NETWORK file generation not available yet.");
 			}
 			else{
 				//The rest of the possibilities: classpath, filesystem or network storage
