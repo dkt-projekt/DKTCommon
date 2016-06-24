@@ -54,6 +54,7 @@ public class DKTNIF {
     
     public static final Property meanDateStart = property("meanDateStart");
     public static final Property meanDateEnd = property("meanDateEnd");
+     
     
     public static String createDocumentURI(){
     	return defaultPrefix+"doc"+((int)(Math.random()*9000)+1000);
