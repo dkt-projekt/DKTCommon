@@ -20,6 +20,7 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import eu.freme.common.conversion.rdf.JenaRDFConversionService;
+import eu.freme.common.conversion.rdf.RDFConstants;
 import eu.freme.common.conversion.rdf.RDFConstants.RDFSerialization;
 import eu.freme.common.conversion.rdf.RDFConversionService;
 import eu.freme.common.exception.BadRequestException;
@@ -102,6 +103,8 @@ public class NIFReader {
 		
 		return writer.toString();
 	}
+	
+
 
 	//TODO maybe delete this method because it only returns the last itsIdentref it finds.
 	public static String extractTaIdentRefFromModel(Model nifModel){
