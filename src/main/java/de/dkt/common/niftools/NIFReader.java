@@ -73,20 +73,23 @@ public class NIFReader {
 //	}
 //
 //	
-//	public static String extractMeanDateRange(Model nifModel){
-//		String str = null;
-//        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
-//        boolean textFound = false;
-//        while (!textFound) {
-//            Resource contextRes = iter.nextStatement().getSubject();
-//            Statement isStringStm = contextRes.getProperty(NIF.meanDateRange);
-//            if (isStringStm != null) {
-//                str = isStringStm.getObject().asLiteral().getString();
-//                textFound = true;
-//            }
-//        }
-//		return str;
-//	}
+	public static String extractMeanDateRange(Model nifModel){
+		String date[] = new String[2];
+        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
+        boolean textFound = false;
+        while (!textFound) {
+            Resource contextRes = iter.nextStatement().getSubject();
+            Statement isStringStm = contextRes.getProperty(TIME.intervalStarts);
+            if (isStringStm != null) {
+                date[0] = isStringStm.getObject().asLiteral().getString();
+            }
+            Statement isStringStm2 = contextRes.getProperty(TIME.intervalFinishes);
+            if (isStringStm2 != null) {
+                date[1] = isStringStm2.getObject().asLiteral().getString();
+            }
+        }
+		return date[0]+"_"+date[1];
+	}
 	
 	public static String model2String(Model nifModel, String format) {
 		StringWriter writer = new StringWriter();
