@@ -78,18 +78,38 @@ public class NIFReader {
 		String date[] = new String[2];
         StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
         boolean textFound = false;
-        while (!textFound) {
-            Resource contextRes = iter.nextStatement().getSubject();
-            Statement isStringStm = contextRes.getProperty(TIME.intervalStarts);
+        while (!textFound && iter.hasNext()) {
+        	Statement st = iter.next();
+            Resource contextRes = st.getSubject();
+            Statement isStringStm = contextRes.getProperty(DKTNIF.meanDateStart);
             if (isStringStm != null) {
                 date[0] = isStringStm.getObject().asLiteral().getString();
             }
-            Statement isStringStm2 = contextRes.getProperty(TIME.intervalFinishes);
+            Statement isStringStm2 = contextRes.getProperty(DKTNIF.meanDateEnd);
             if (isStringStm2 != null) {
                 date[1] = isStringStm2.getObject().asLiteral().getString();
             }
         }
 		return date[0]+"_"+date[1];
+	}
+	
+	public static String extractMeanPositionRange(Model nifModel){
+		String position[] = new String[2];
+        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
+        boolean textFound = false;
+        while (!textFound && iter.hasNext()) {
+        	Statement st = iter.next();
+            Resource contextRes = st.getSubject();
+            Statement isStringStm = contextRes.getProperty(DKTNIF.averageLatitude);
+            if (isStringStm != null) {
+                position[0] = isStringStm.getObject().asLiteral().getString();
+            }
+            Statement isStringStm2 = contextRes.getProperty(DKTNIF.averageLongitude);
+            if (isStringStm2 != null) {
+                position[1] = isStringStm2.getObject().asLiteral().getString();
+            }
+        }
+		return position[0]+"_"+position[1];
 	}
 	
 	public static String model2String(Model nifModel, String format) {
