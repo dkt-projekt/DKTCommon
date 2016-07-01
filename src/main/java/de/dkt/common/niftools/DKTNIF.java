@@ -25,7 +25,8 @@ public class DKTNIF {
         return ResourceFactory.createResource(uri + local);
     }
 
-    protected static final Property property(String local) {
+    //protected static final Property property(String local) {
+    public static final Property property(String local) {
         return ResourceFactory.createProperty(uri, local);
     }
       
@@ -54,7 +55,7 @@ public class DKTNIF {
     
     public static final Property meanDateStart = property("meanDateStart");
     public static final Property meanDateEnd = property("meanDateEnd");
-     
+    
     
     public static String createDocumentURI(){
     	return defaultPrefix+"doc"+((int)(Math.random()*9000)+1000);
