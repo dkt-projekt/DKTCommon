@@ -37,4 +37,5 @@ public class ITSRDF {
     public static final Property taIdentRef = property("taIdentRef");
     public static final Property taSource = property("taSource");
 
+    public static final Property target = property("target");
 }
