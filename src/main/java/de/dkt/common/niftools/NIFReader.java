@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
@@ -82,7 +83,24 @@ public class NIFReader {
             Resource contextRes = st.getSubject();
             Statement isStringStm = contextRes.getProperty(ITSRDF.target);
             if (isStringStm != null) {
+            	Literal l = isStringStm.getObject().asLiteral();
+//            	l.
                 return isStringStm.getObject().asLiteral().getString();
+            }
+        }
+        return null;
+	}
+	
+	public static String extractITSRDFTargetLanguage(Model nifModel){
+        StmtIterator iter = nifModel.listStatements(null, RDF.type, NIF.Context);
+        boolean textFound = false;
+        while (!textFound && iter.hasNext()) {
+        	Statement st = iter.next();
+            Resource contextRes = st.getSubject();
+            Statement isStringStm = contextRes.getProperty(ITSRDF.target);
+            if (isStringStm != null) {
+            	Literal l = isStringStm.getObject().asLiteral();
+            	return l.getLanguage();
             }
         }
         return null;
