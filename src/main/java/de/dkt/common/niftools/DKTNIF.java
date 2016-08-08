@@ -40,6 +40,8 @@ public class DKTNIF {
     public static final Property DocumentPath = property("DocumentPath");
     public static final Property DocumentNIFPath = property("DocumentNIFPath");
 
+    public static final Property DocumentName = property("DocumentName");
+
     public static final Resource anchorOf = resource("anchorOf");
     public static final Property beginIndex = property("beginIndex");
     public static final Property confidence = property("confidence");
