@@ -9,6 +9,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -190,6 +191,30 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.relationAction, outModel.createResource(act));
 		outModel.add(spanAsResource, NIF.relationObject, outModel.createResource(obj));
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
+	}
+	
+	public static void addDareRelationAnnotation(Model outModel, int startIndex, int endIndex, HashMap<String, List<Integer>> arguments, HashMap<String, String> argumentStrings, String relationType){
+		String docURI = NIFReader.extractDocumentURI(outModel);
+		
+		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource spanAsResource = outModel.createResource(spanUri);
+		outModel.add(spanAsResource, RDF.type, NIF.String);
+		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, DKTNIF.dareRelationType, outModel.createTypedLiteral(relationType, XSDDatatype.XSDstring));
+		
+		for (String argumentName : arguments.keySet()){
+			//outModel.add(spanAsResource, DKTNIF.dareRelationArgumentName, outModel.createTypedLiteral(argumentName, XSDDatatype.XSDstring));
+			Property dareRelationArgumentStartIndexPrefix = ResourceFactory.createProperty("http://dkt.dfki.de/ontologies/nif#dfkiDareStartIndexArgument_" + argumentName);
+			Property dareRelationArgumentEndIndexPrefix = ResourceFactory.createProperty("http://dkt.dfki.de/ontologies/nif#dfkiDareEndIndexArgument_" + argumentName);
+			Property dareRelationArgumentAnchorOfPrefix = ResourceFactory.createProperty("http://dkt.dfki.de/ontologies/nif#dfkiDareAnchorOfArgument_" + argumentName);
+			outModel.add(spanAsResource, dareRelationArgumentStartIndexPrefix, outModel.createTypedLiteral(arguments.get(argumentName).get(0), XSDDatatype.XSDnonNegativeInteger));
+			outModel.add(spanAsResource, dareRelationArgumentEndIndexPrefix, outModel.createTypedLiteral(arguments.get(argumentName).get(1), XSDDatatype.XSDnonNegativeInteger));
+			outModel.add(spanAsResource, dareRelationArgumentAnchorOfPrefix, outModel.createTypedLiteral(argumentStrings.get(argumentName), XSDDatatype.XSDnonNegativeInteger));
+		}
+		
 	}
 	
 	public static void addSpan(Model outModel, Resource documentResource, String inputText, String documentURI,

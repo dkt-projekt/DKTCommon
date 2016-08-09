@@ -1,5 +1,6 @@
 package de.dkt.common.niftools;
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
@@ -55,6 +56,14 @@ public class DKTNIF {
     
     public static final Property meanDateStart = property("meanDateStart");
     public static final Property meanDateEnd = property("meanDateEnd");
+    
+    
+    public static final Property dareRelationType = property("dfkiDareRelationType");
+    public static final Property dareRelationArgumentName = property("dfkiDareRelationArgumentName");
+//    public static final Property dareRelationArgumentStartIndexPrefix = property("dfkiDareStartIndexArgument_");
+//    public static final Property dareRelationArgumentEndIndexPrefix = property("dfkiDareEndIndexArgument_");
+//    public static final Property dareRelationArgumentAnchorOfPrefix = property("dfkiDareAnchorOfArgument_");
+    
     
     
     public static String createDocumentURI(){
