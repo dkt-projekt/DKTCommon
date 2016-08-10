@@ -29,6 +29,7 @@ public class InteractionManagement {
 				logger.error("ERROR storing interaction for "+objectId);
 				return false;
 			}
+			logger.info("Interaction properly stored for: "+objectId);
 		}
 		catch(Exception e){
 			e.printStackTrace();
