@@ -26,6 +26,7 @@ public class InteractionManagement {
 					.queryString("errorType", errorType)
 					.asString();
 			if(response.getStatus()!=200){
+				logger.error("ERROR storing interaction for "+objectId);
 				return false;
 			}
 		}
