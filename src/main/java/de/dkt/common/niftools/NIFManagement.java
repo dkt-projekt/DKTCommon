@@ -1,5 +1,6 @@
 package de.dkt.common.niftools;
 
+import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,23 +10,61 @@ import org.json.JSONObject;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
 
+import ch.qos.logback.classic.turbo.TurboFilter;
 import de.dkt.common.exceptions.LoggedExceptions;
+import de.dkt.common.filemanagement.FileFactory;
 import de.dkt.common.niftools.DKTNIF;
 import de.dkt.common.niftools.NIF;
 import de.dkt.common.niftools.NIFReader;
 import de.dkt.common.niftools.NIFWriter;
 import eu.freme.common.conversion.rdf.RDFConstants;
+import eu.freme.common.conversion.rdf.RDFConstants.RDFSerialization;
 import eu.freme.common.exception.BadRequestException;
 
 public class NIFManagement {
 
+	public static void main(String[] args) throws Exception{
+		String path = "/Users/jumo04/Documents/DFKI/DKT/testForNIFManagement/nifCollectionExample.txt";
+		BufferedReader br = FileFactory.generateBufferedReaderInstance(path, "utf-8");
+		String line = br.readLine();
+		String content = line+"\n";
+		while(line!=null){
+			content +=line+"\n";
+			line=br.readLine();
+		}
+		br.close();
+		
+		Model m = NIFReader.extractModelFromFormatString(content, RDFSerialization.N3);
+		System.out.println(m.size());
+		List<Model> documents = NIFManagement.extractDocumentsModels(m);
+		System.out.println(documents.size());
+		
+//		m = NIFReader.extractModelFromFormatString(content, RDFSerialization.TURTLE);
+//		System.out.println(m.size());
+//		documents = NIFManagement.extractDocumentsModels(m);
+//		System.out.println(documents.size());
+//		
+//		m = NIFReader.extractModelFromFormatString(content, RDFSerialization.N_TRIPLES);
+//		System.out.println(m.size());
+//		documents = NIFManagement.extractDocumentsModels(m);
+//		System.out.println(documents.size());
+//		
+//		m = NIFReader.extractModelFromFormatString(content, RDFSerialization.XML);
+//		System.out.println(m.size());
+//		documents = NIFManagement.extractDocumentsModels(m);
+//		System.out.println(documents.size());
+		
+	}
+	
 	public static void setPrefixes(Model model){
 		model.setNsPrefix("nif", RDFConstants.nifPrefix);
 		model.setNsPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
@@ -120,13 +159,19 @@ public class NIFManagement {
 	public static List<Model> extractDocumentsModels(Model collectionModel) {
 		List<Model> documents = new LinkedList<Model>();
 		
-		ResIterator subjects = collectionModel.listSubjectsWithProperty(DKTNIF.DocumentName);
-		while(subjects.hasNext()){
+		NodeIterator objects = collectionModel.listObjectsOfProperty(NIF.hasContext);
+		while(objects.hasNext()){
 			Model documentModel = ModelFactory.createDefaultModel();
 			documentModel.setNsPrefixes(collectionModel.getNsPrefixMap());
-			Resource sub = subjects.next();
+			RDFNode node = objects.next();
+			Resource sub = node.asResource();
+//			System.out.println("-------Subject------- "+sub.getURI());
 			StmtIterator iter = sub.listProperties();
+//			System.out.println("-------iter------- "+iter.next().getSubject().getURI());
+//			System.out.println("-------iter------- "+iter.next().getPredicate().getURI());
+//			System.out.println("-------iter------- "+iter.next().getObject().toString());
 			documentModel.add(iter);
+//			System.out.println(documentModel.size());
 			documents.add(documentModel);
 		}
 		return documents;
