@@ -42,6 +42,9 @@ public class DKTNIF {
 
     public static final Property DocumentName = property("DocumentName");
 
+    public static final Property isHyperlinkedTo = property("isHyperlinkedTo");
+
+    
     public static final Resource anchorOf = resource("anchorOf");
     public static final Property beginIndex = property("beginIndex");
     public static final Property confidence = property("confidence");

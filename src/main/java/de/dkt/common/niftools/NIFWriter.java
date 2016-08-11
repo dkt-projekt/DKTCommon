@@ -10,12 +10,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
-
-import de.dkt.common.niftools.ITSRDF;
-import de.dkt.common.niftools.NIF;
-import de.dkt.common.niftools.NIFTransferPrefixMapping;
 
 public class NIFWriter {
 
@@ -351,10 +346,8 @@ public class NIFWriter {
 		nifModel.add(entityResource, ITSRDF.taIdentRef, nifModel.createResource(entURI));
 	}
 	
-	public static void addLuceneIndexingInformation(Model outModel, String inputText, String documentURI, String indexName, String indexPath){
-		
-		int endTotalText = inputText.codePointCount(0, inputText.length());
-		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+	public static void addLuceneIndexingInformation(Model outModel, String indexName, String indexPath){
+		String documentUri = NIFReader.extractDocumentWholeURI(outModel);
         Resource documentResource = outModel.getResource(documentUri);
         outModel.add(documentResource, NIF.indexName, outModel.createTypedLiteral(indexName, XSDDatatype.XSDstring));
         outModel.add(documentResource, NIF.indexPath, outModel.createTypedLiteral(indexPath, XSDDatatype.XSDstring));
