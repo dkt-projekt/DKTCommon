@@ -19,7 +19,6 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-import ch.qos.logback.classic.turbo.TurboFilter;
 import de.dkt.common.exceptions.LoggedExceptions;
 import de.dkt.common.filemanagement.FileFactory;
 import de.dkt.common.niftools.DKTNIF;
