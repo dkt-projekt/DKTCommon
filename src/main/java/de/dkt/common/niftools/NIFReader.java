@@ -7,8 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
@@ -19,6 +21,7 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import eu.freme.common.conversion.rdf.JenaRDFConversionService;
+import eu.freme.common.conversion.rdf.RDFConstants;
 import eu.freme.common.conversion.rdf.RDFConstants.RDFSerialization;
 import eu.freme.common.conversion.rdf.RDFConversionService;
 import eu.freme.common.exception.BadRequestException;
@@ -141,9 +144,23 @@ public class NIFReader {
 		return position[0]+"_"+position[1];
 	}
 	
-	public static String model2String(Model nifModel, String format) {
+	public static String model2String(Model nifModel, RDFSerialization format) {
 		StringWriter writer = new StringWriter();
-		nifModel.write(writer, format);
+		// from the javadocs for the writer:
+		//The language in which to write the model is specified by the lang argument. Predefined values are "RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", (and "TTL") and "N3". The default value, represented by null is "RDF/XML".
+		// for now we only ever use turtle and rdf/xml
+		String outformat = null;
+		if (format.equals(RDFSerialization.TURTLE)){
+			outformat = format.toString();
+		}
+		else if (format.equals(RDFSerialization.RDF_XML)){
+			outformat = "RDF/XML";
+		}
+		else {
+			throw new BadRequestException("Format " + format.toString() + " not supported by jena writer.");
+		}
+		
+		nifModel.write(writer, outformat);
 		try {
 			writer.close();
 		} catch (IOException e) {
