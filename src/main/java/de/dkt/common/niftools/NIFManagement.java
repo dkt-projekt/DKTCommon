@@ -128,7 +128,8 @@ public class NIFManagement {
 		String collectionURI = extractCollectionURI(collectionModel);
 		String documentURI = extractCompleteDocumentURI(documentModel);
 		Resource collectionURIResource = collectionModel.createResource(collectionURI);
-		collectionModel.add(collectionURIResource, NIF.hasContext, documentURI);
+		Resource documentURIResource = collectionModel.createResource(documentURI);
+		collectionModel.add(collectionURIResource, NIF.hasContext, documentURIResource);
 		collectionModel.add(documentModel);
 //		System.out.println("COLLECTION: " + NIFReader.model2String(collectionModel, "Turtle"));
 	}

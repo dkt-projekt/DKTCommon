@@ -7,10 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResIterator;
@@ -21,7 +19,6 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import eu.freme.common.conversion.rdf.JenaRDFConversionService;
-import eu.freme.common.conversion.rdf.RDFConstants;
 import eu.freme.common.conversion.rdf.RDFConstants.RDFSerialization;
 import eu.freme.common.conversion.rdf.RDFConversionService;
 import eu.freme.common.exception.BadRequestException;
@@ -327,6 +324,78 @@ public class NIFReader {
 				map.put(predicate,object);
 			}
             if(!map.isEmpty()){
+                list.put(entityURI,map);
+            }
+        }
+        if(list.isEmpty()){
+        	return null;
+        }
+		return list;
+	}
+
+	public static Map<String,Map<String,String>> extractTemporalEntitiesExtended(Model nifModel){
+		Map<String,Map<String,String>> list = new HashMap<String,Map<String,String>>();
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
+        while (iterEntities.hasNext()) {
+    		Map<String,String> map = new HashMap<String,String>();
+            Resource r = iterEntities.nextResource();
+
+            String entityURI = r.getURI();
+            
+            StmtIterator iter2 = r.listProperties();
+            boolean isTemporalExpression=false;
+            while (iter2.hasNext()) {
+				Statement st2 = iter2.next();
+				String predicate =st2.getPredicate().getURI(); 
+				String object = null;
+				if(st2.getObject().isResource()){
+					object = st2.getObject().asResource().getURI();
+				}
+				else{
+					object = st2.getObject().asLiteral().getString();
+				}
+				if(predicate.equalsIgnoreCase(ITSRDF.taClassRef.getURI()) && object.equalsIgnoreCase(TIME.temporalEntity.getURI())){
+					isTemporalExpression=true;
+				}
+				map.put(predicate,object);
+			}
+            if(!map.isEmpty() && isTemporalExpression){
+                list.put(entityURI,map);
+            }
+        }
+        if(list.isEmpty()){
+        	return null;
+        }
+		return list;
+	}
+
+	public static Map<String,Map<String,String>> extractNonTemporalEntitiesExtended(Model nifModel){
+		Map<String,Map<String,String>> list = new HashMap<String,Map<String,String>>();
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
+        while (iterEntities.hasNext()) {
+    		Map<String,String> map = new HashMap<String,String>();
+            Resource r = iterEntities.nextResource();
+
+            String entityURI = r.getURI();
+            
+            StmtIterator iter2 = r.listProperties();
+            boolean isTemporalExpression=false;
+            while (iter2.hasNext()) {
+				Statement st2 = iter2.next();
+				String predicate =st2.getPredicate().getURI(); 
+				String object = null;
+				if(st2.getObject().isResource()){
+					object = st2.getObject().asResource().getURI();
+				}
+				else{
+					object = st2.getObject().asLiteral().getString();
+				}
+				if(predicate.equalsIgnoreCase(ITSRDF.taClassRef.getURI()) && object.equalsIgnoreCase(TIME.temporalEntity.getURI())){
+					isTemporalExpression=true;
+				}
+				map.put(predicate,object);
+			}
+            if(!map.isEmpty() && !isTemporalExpression){
                 list.put(entityURI,map);
             }
         }
