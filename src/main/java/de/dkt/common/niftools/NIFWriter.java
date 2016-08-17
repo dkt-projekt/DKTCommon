@@ -263,6 +263,35 @@ public class NIFWriter {
 
 	}
 	
+	/** Method to add annotations for source segments in esmt/xlingual
+	 * 
+	 * @param outModel
+	 * @param startIndex
+	 * @param endIndex
+	 * @param text
+	 * @return
+	 */
+	public static Model addAnnotationMTSource(Model outModel, int startIndex, int endIndex, String text){
+				System.out.println("Hello I am inside here\n");
+				String docURI = NIFReader.extractDocumentURI(outModel);
+				String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+				Resource spanAsResource = outModel.createResource(spanUri);
+				outModel.add(spanAsResource, RDF.type, NIF.Phrase);
+				outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+				
+				outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+				outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+				outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+				//outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
+				//outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+		        //outModel.add(spanAsResource, ITSRDF.taClassRef, nerType);
+				return outModel;
+		        
+	}
+	
+	
+	
 	public static Model initializeOutputModel(){
 		Model model = ModelFactory.createDefaultModel();
 		//TODO Add NIF namespaces and more.
@@ -288,6 +317,8 @@ public class NIFWriter {
         
 		return model;
 	}
+	
+	
 
 	public static Model addPrefixToModel(Model model, String abbrev, String uri){
 		model.setNsPrefix(abbrev, uri);
