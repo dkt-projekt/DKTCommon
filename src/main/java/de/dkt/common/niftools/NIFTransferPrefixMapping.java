@@ -10,7 +10,7 @@ public class NIFTransferPrefixMapping {
 
     private static final String PREFIX_TO_NS_MAPPING[][] = new String[][] { { "nif", NIF.getURI() },
             { "itsrdf", ITSRDF.getURI() }, { "rdf", RDF.getURI() }, { "rdfs", RDFS.getURI() },
-            { "xsd", XSDDatatype.XSD + '#' } };
+            { "xsd", XSDDatatype.XSD + '#' }, {"nif-ann", NIFANN.getURI()} };
 
     private static PrefixMapping instance = null;
 

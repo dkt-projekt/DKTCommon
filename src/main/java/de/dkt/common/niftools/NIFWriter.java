@@ -263,16 +263,17 @@ public class NIFWriter {
 
 	}
 	
-	/** Method to add annotations for source segments in esmt/xlingual
-	 * 
-	 * @param outModel
-	 * @param startIndex
-	 * @param endIndex
-	 * @param text
-	 * @return
+	/** Method to add NIF annotations for source segments in esmt/xlingual
+	 * Note these source segments are of type nif:Phrase
+	 * @param outModel the current NIF model
+	 * @param startIndex beginning of the source phrase
+	 * @param endIndex end of the source phrase
+	 * @param text surface representation of the phrase
+	 * @param documentResource is the original context
+	 * @return the updated Model
 	 */
-	public static Model addAnnotationMTSource(Model outModel, int startIndex, int endIndex, String text){
-				System.out.println("Hello I am inside here\n");
+	public static Model addAnnotationMTSource(Model outModel, int startIndex, int endIndex, String text, Resource documentResource){
+				//System.out.println("Hello I am inside here\n");
 				String docURI = NIFReader.extractDocumentURI(outModel);
 				String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
@@ -283,6 +284,7 @@ public class NIFWriter {
 				outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
 				outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 				outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+				outModel.add(spanAsResource, NIF.referenceContext, documentResource);
 				//outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
 				//outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
 		        //outModel.add(spanAsResource, ITSRDF.taClassRef, nerType);

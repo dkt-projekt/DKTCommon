@@ -222,6 +222,18 @@ public class NIFReader {
 		throw new BadRequestException("No context/document found.");
 	}
 	
+	public static Resource extractDocumentResourceURI(Model nifModel){
+		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
+        
+		while(iter.hasNext()){
+			Resource contextRes = iter.nextStatement().getSubject();
+			//System.out.println(contextRes.getURI());
+			String uri = contextRes.getURI();
+			return nifModel.createResource(uri);
+		}
+		throw new BadRequestException("No context/document found.");
+	}
+	
 
 	public static String extractDocumentPath(Model nifModel){
 		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
