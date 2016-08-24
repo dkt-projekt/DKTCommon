@@ -295,7 +295,7 @@ public class NIFReader {
 		//ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
 		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
 		while (iterEntities.hasNext()) {
-            Resource r = iterEntities.nextResource();
+			Resource r = iterEntities.nextResource();
             //Statement st = r.getProperty(NIF.entity);
             Statement st = r.getProperty(ITSRDF.taClassRef);
             String stringSt = ( st!=null ) ? st.getObject().asResource().getURI() : null;
