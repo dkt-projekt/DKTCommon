@@ -5,13 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
-import com.hp.hpl.jena.rdf.model.Bag;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 public class NIFWriter {
@@ -168,6 +167,29 @@ public class NIFWriter {
 		outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource(nerType));
 		
 	}
+	
+	
+	public static void addCoreferenceAnnotation(Model outModel, int startIndex, int endIndex, String text, String sameAsEntityURI){
+		
+		String docURI = NIFReader.extractDocumentURI(outModel);
+		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Map<String, String> prefixes = outModel.getNsPrefixMap();
+		if (!prefixes.containsKey("owl")){
+			prefixes.put("owl", "http://www.w3.org/2002/07/owl#");
+			outModel.setNsPrefixes(prefixes);
+		}
+		
+		Resource spanAsResource = outModel.createResource(spanUri);
+		outModel.add(spanAsResource, RDF.type, NIF.String);
+		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
+		outModel.add(spanAsResource, OWL.sameAs, outModel.createTypedLiteral(sameAsEntityURI, XSDDatatype.XSDstring));
+		
+	}
 
 	public static void addAnnotationRelation(Model outModel, int startIndex, int endIndex, String text, String sub, String act, String obj){
 		String docURI = NIFReader.extractDocumentURI(outModel);
@@ -265,6 +287,37 @@ public class NIFWriter {
 
 	}
 	
+	/** Method to add NIF annotations for source segments in esmt/xlingual
+	 * Note these source segments are of type nif:Phrase
+	 * @param outModel the current NIF model
+	 * @param startIndex beginning of the source phrase
+	 * @param endIndex end of the source phrase
+	 * @param text surface representation of the phrase
+	 * @param documentResource is the original context
+	 * @return the updated Model
+	 */
+	public static Model addAnnotationMTSource(Model outModel, int startIndex, int endIndex, String text, Resource documentResource){
+				//System.out.println("Hello I am inside here\n");
+				String docURI = NIFReader.extractDocumentURI(outModel);
+				String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+				Resource spanAsResource = outModel.createResource(spanUri);
+				outModel.add(spanAsResource, RDF.type, NIF.Phrase);
+				outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+				
+				outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+				outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+				outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+				outModel.add(spanAsResource, NIF.referenceContext, documentResource);
+				//outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
+				//outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
+		        //outModel.add(spanAsResource, ITSRDF.taClassRef, nerType);
+				return outModel;
+		        
+	}
+	
+	
+	
 	public static Model initializeOutputModel(){
 		Model model = ModelFactory.createDefaultModel();
 		//TODO Add NIF namespaces and more.
@@ -290,6 +343,8 @@ public class NIFWriter {
         
 		return model;
 	}
+	
+	
 
 	public static Model addPrefixToModel(Model model, String abbrev, String uri){
 		model.setNsPrefix(abbrev, uri);

@@ -4,6 +4,13 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
+/**
+ * The NIF 2.1 Annotation class. <b>Note</b>
+ * that this class might need to be edited later, this is a temporary shortcut for esmt/xlingual.
+ * 
+ * @author Ankit Srivastava
+ * 
+ */
 public class NIFANN {
 
     protected static final String uri = "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-annotation#";
