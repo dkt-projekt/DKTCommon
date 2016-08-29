@@ -12,8 +12,8 @@ public class ResponseGenerator {
     public static ResponseEntity<String> successResponse(String body, String contentType) throws BadRequestException {
     	
     	RDFSerialization format = RDFSerialization.fromValue(contentType);
-    	System.out.println(contentType);
-    	System.out.println(format);
+//    	System.out.println(contentType);
+//   	System.out.println(format);
     	HttpHeaders responseHeaders = new HttpHeaders();
     	responseHeaders.add("Content-Type", format.contentType());
     	ResponseEntity<String> response = new ResponseEntity<String>(body, responseHeaders, HttpStatus.OK);

@@ -43,6 +43,7 @@ public class DKTNIF {
     public static final Property DocumentName = property("DocumentName");
 
     public static final Property isHyperlinkedTo = property("isHyperlinkedTo");
+    public static final Property hasHyperlinkedConfidence = property("hasHyperlinkedConfidence");
 
     
     public static final Resource anchorOf = resource("anchorOf");

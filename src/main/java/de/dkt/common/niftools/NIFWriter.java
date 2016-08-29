@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.rdf.model.Bag;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -383,5 +385,15 @@ public class NIFWriter {
 		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
         Resource documentResource = outModel.getResource(documentUri);
         outModel.add(documentResource, NIF.topicModelling, outModel.createTypedLiteral(label, XSDDatatype.XSDstring));
+	}
+
+	public static void addAnnotationUnit(Model outModel, String uri, String documentURI, double confidence){
+		addPrefixToModel(outModel, "nif-ann", "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-annotation#");
+		Resource resource = outModel.getResource(uri);
+        Resource anon = outModel.createResource();
+//        Bag bag = outModel.createBag();
+        anon.addProperty(DKTNIF.isHyperlinkedTo, outModel.createResource(documentURI));
+        anon.addLiteral(DKTNIF.hasHyperlinkedConfidence, confidence);
+        outModel.add(resource, NIFANN.AnnotationUnit, anon);
 	}
 }

@@ -275,4 +275,37 @@ public class NIFManagement {
 		return obj;		
 	}
 	
+	public static List<HashMap<String, String>> extractAnnotationUnits(Model model, String uri){
+		List<HashMap<String, String>> list = new LinkedList<HashMap<String,String>>();
+		
+		Resource res = model.getResource(uri);
+		StmtIterator it = res.listProperties(NIFANN.AnnotationUnit);
+		while(it.hasNext()){
+			Statement st = it.next();
+			RDFNode node = st.getObject();
+			Resource res2 = node.asResource();
+			StmtIterator it2 = res2.listProperties();
+			HashMap<String, String> hash = new HashMap<String, String>();
+			while(it2.hasNext()){
+				Statement st2 = it2.next();
+				if(st2.getObject().isLiteral()){
+					hash.put(st2.getPredicate().getURI(), st2.getObject().asLiteral().getValue().toString());
+				}
+				else{
+					hash.put(st2.getPredicate().getURI(), st2.getObject().asResource().getURI());
+				}
+//				System.out.println("DEBUG: statement: "+st.toString());
+//				System.out.println(st2.getPredicate().getURI() + "___" + st2.getObject().toString());
+			}
+			list.add(hash);
+//			System.out.println();
+//			System.out.println("DEBUG: statement: "+st.toString());
+		}
+////        Bag bag = outModel.createBag();
+//        anon.addProperty(DKTNIF.isHyperlinkedTo, outModel.createResource(documentURI));
+//        anon.addLiteral(DKTNIF.hasHyperlinkedConfidence, confidence);
+//        outModel.add(resource, NIFANN.AnnotationUnit, anon);
+		return list;
+	}
+
 }
