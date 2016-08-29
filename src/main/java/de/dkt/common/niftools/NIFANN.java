@@ -32,18 +32,6 @@ public class NIFANN {
         return ResourceFactory.createProperty(uri, local);
     }
 
-<<<<<<< HEAD
     public static final Property AnnotationUnit = property("annotationUnit");
 
-
 }
-=======
-    //public static final Property taClassRef = property("taClassRef");
-    //public static final Property taConfidence = property("taConfidence");
-    //public static final Property taIdentRef = property("taIdentRef");
-    //public static final Property taSource = property("taSource");
-
-    //public static final Property target = property("target");
-}
-
->>>>>>> branch 'master' of https://github.com/dkt-projekt/DKTCommon
