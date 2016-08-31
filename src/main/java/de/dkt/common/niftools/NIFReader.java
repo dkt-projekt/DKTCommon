@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -249,6 +250,17 @@ public class NIFReader {
 		throw new BadRequestException("No document path found.");
 	}
 
+	public static String extractIndexNIFPath(Model nifModel){
+		String documentUri = NIFReader.extractDocumentWholeURI(nifModel);
+        Resource documentResource = nifModel.getResource(documentUri);
+        NodeIterator it = nifModel.listObjectsOfProperty(documentResource, NIF.indexPath);
+        String result = "";
+        while(it.hasNext()){
+        	result += ";"+it.next().asLiteral().getString();
+        }
+        return (result!=null && result.length()>0)?result.substring(1):"";
+	}
+	
 	public static String extractDocumentNIFPath(Model nifModel){
 		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
       

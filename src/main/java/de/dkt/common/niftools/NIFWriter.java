@@ -7,6 +7,7 @@ import java.util.Map;
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
@@ -406,6 +407,17 @@ public class NIFWriter {
 	public static void addLuceneIndexingInformation(Model outModel, String indexName, String indexPath){
 		String documentUri = NIFReader.extractDocumentWholeURI(outModel);
         Resource documentResource = outModel.getResource(documentUri);
+        outModel.add(documentResource, NIF.indexName, outModel.createTypedLiteral(indexName, XSDDatatype.XSDstring));
+        outModel.add(documentResource, NIF.indexPath, outModel.createTypedLiteral(indexPath, XSDDatatype.XSDstring));
+	}
+
+	public static void changeLuceneIndexingInformation(Model outModel, String indexName, String indexPath){
+		String documentUri = NIFReader.extractDocumentWholeURI(outModel);
+        Resource documentResource = outModel.getResource(documentUri);
+        NodeIterator it = outModel.listObjectsOfProperty(documentResource, NIF.indexPath);
+        while(it.hasNext()){
+            outModel.remove(documentResource, NIF.indexPath, it.next());
+        }
         outModel.add(documentResource, NIF.indexName, outModel.createTypedLiteral(indexName, XSDDatatype.XSDstring));
         outModel.add(documentResource, NIF.indexPath, outModel.createTypedLiteral(indexPath, XSDDatatype.XSDstring));
 	}
