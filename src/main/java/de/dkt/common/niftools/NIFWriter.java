@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
@@ -13,6 +14,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
+
+import eu.freme.common.conversion.rdf.RDFConstants;
 
 public class NIFWriter {
 
@@ -295,27 +298,52 @@ public class NIFWriter {
 	 * @param endIndex end of the source phrase
 	 * @param text surface representation of the phrase
 	 * @param documentResource is the original context
-	 * @return the updated Model
+	 * @param annIndex index number of the annotation unit
 	 */
-	public static Model addAnnotationMTSource(Model outModel, int startIndex, int endIndex, String text, Resource documentResource){
+	public static void addAnnotationMTSource(Model outModel, int startIndex, int endIndex, String text, Resource documentResource, String annIndex){
 				//System.out.println("Hello I am inside here\n");
 				String docURI = NIFReader.extractDocumentURI(outModel);
 				String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
 				Resource spanAsResource = outModel.createResource(spanUri);
 				outModel.add(spanAsResource, RDF.type, NIF.Phrase);
-				outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+				//outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+				outModel.add(spanAsResource, RDF.type, NIF.OffsetString);
 				
 				outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
 				outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 				outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
 				outModel.add(spanAsResource, NIF.referenceContext, documentResource);
+				outModel.add(spanAsResource, NIFANN.AnnotationUnit, outModel.createResource(annIndex));
 				//outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
 				//outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
 		        //outModel.add(spanAsResource, ITSRDF.taClassRef, nerType);
-				return outModel;
 		        
 	}
+	
+	
+	/** Method to add NIF annotations for target segments in esmt/xlingual
+	 * Note these target segments are annotation units (blank nodes represented by AnonId)
+	 * @param outModel the current NIF model
+	 * @param text surface representation of the phrase
+	 * @param targetLang language of the text
+	 * @param documentResource is the original context
+	 * @param annIndex index number of the annotation unit
+	 */
+	public static void addAnnotationMTTarget(Model outModel, String text, String targetLang, Resource documentResource, String annIndex){
+				//System.out.println("Hello I am inside here\n");
+				//AnonId bnode = new AnonId(annIndex);
+				Resource spanAsResource = outModel.createResource(annIndex);
+				
+				if (!outModel.getNsPrefixMap().containsValue(RDFConstants.itsrdfPrefix)) {
+	                outModel.setNsPrefix("itsrdf", RDFConstants.itsrdfPrefix);
+	            }
+
+	            Literal literal = outModel.createLiteral(text, targetLang);
+	            spanAsResource.addLiteral(outModel.getProperty(RDFConstants.itsrdfPrefix + "target"), literal);
+		        
+	}
+	
 	
 	
 	
