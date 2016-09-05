@@ -30,6 +30,7 @@ public class NIF {
     public static final Resource String = resource("String");
     public static final Resource Phrase = resource("Phrase");
     public static final Resource RFC5147String = resource("RFC5147String");
+    public static final Resource OffsetString = resource("OffsetBasedString");
 
     public static final Resource ContextCollection = resource("ContextCollection");
     public static final Property hasContext = property("hasContext");
