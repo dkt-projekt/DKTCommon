@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -249,6 +250,17 @@ public class NIFReader {
 		throw new BadRequestException("No document path found.");
 	}
 
+	public static String extractIndexNIFPath(Model nifModel){
+		String documentUri = NIFReader.extractDocumentWholeURI(nifModel);
+        Resource documentResource = nifModel.getResource(documentUri);
+        NodeIterator it = nifModel.listObjectsOfProperty(documentResource, NIF.indexPath);
+        String result = "";
+        while(it.hasNext()){
+        	result += ";"+it.next().asLiteral().getString();
+        }
+        return (result!=null && result.length()>0)?result.substring(1):"";
+	}
+	
 	public static String extractDocumentNIFPath(Model nifModel){
 		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
       
@@ -288,6 +300,36 @@ public class NIFReader {
         }
 		return list;
 	}
+	
+	public static List<String[]> extractTemporalExpressions(Model nifModel){
+		List<String[]> list = new LinkedList<String[]>();
+				
+        //ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(TIME.intervalStarts);
+        while (iterEntities.hasNext()) {
+            Resource r = iterEntities.nextResource();
+            //Statement st = r.getProperty(NIF.entity);
+            Statement st = r.getProperty(ITSRDF.taClassRef);
+            String stringSt = ( st!=null ) ? st.getObject().asResource().getURI() : null;
+//            System.out.println("1."+st.getObject().asResource().getURI());
+            Statement st2 = r.getProperty(NIF.anchorOf);
+            String stringSt2 = ( st2!=null ) ? st2.getLiteral().getString() : null;
+//            System.out.println("7."+st2.getLiteral().getString());
+            Statement st3 = r.getProperty(TIME.intervalStarts);
+            String stringSt3 = ( st2!=null ) ? st3.getLiteral().getString() : null;
+            Statement st4 = r.getProperty(TIME.intervalFinishes);
+            String stringSt4 = ( st2!=null ) ? st4.getLiteral().getString() : null;
+            
+            String[] information = {stringSt, stringSt2, stringSt3, stringSt4};
+            list.add(information);
+        }
+        if(list.isEmpty()){
+        	return null;
+        }
+		return list;
+	}
+	
+
 	
 	public static List<String[]> extractEntityIndices(Model nifModel){
 		
