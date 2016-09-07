@@ -213,7 +213,6 @@ public class NIFReader {
 
 	public static String extractDocumentWholeURI(Model nifModel){
 		StmtIterator iter = nifModel.listStatements(null, RDF.type, nifModel.getResource(NIF.Context.getURI()));
-      
 		while(iter.hasNext()){
 			Resource contextRes = iter.nextStatement().getSubject();
 			//System.out.println(contextRes.getURI());

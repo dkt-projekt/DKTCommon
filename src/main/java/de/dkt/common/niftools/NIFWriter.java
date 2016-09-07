@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
@@ -462,5 +463,10 @@ public class NIFWriter {
         anon.addProperty(DKTNIF.isHyperlinkedTo, outModel.createResource(documentURI));
         anon.addLiteral(DKTNIF.hasHyperlinkedConfidence, confidence);
         outModel.add(resource, NIFANN.AnnotationUnit, anon);
+	}
+
+	public static void addBabelnetAnnotation(Model outModel, String documentURI, String sense, String language){
+		Resource resource = outModel.getResource(documentURI);
+        outModel.add(resource, DKTNIF.babelnetSense, sense+"@"+language);
 	}
 }

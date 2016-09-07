@@ -45,6 +45,7 @@ public class DKTNIF {
     public static final Property isHyperlinkedTo = property("isHyperlinkedTo");
     public static final Property hasHyperlinkedConfidence = property("hasHyperlinkedConfidence");
 
+    public static final Property babelnetSense = property("babelnetSense");
     
     public static final Resource anchorOf = resource("anchorOf");
     public static final Property beginIndex = property("beginIndex");

@@ -10,7 +10,9 @@ import eu.freme.common.exception.BadRequestException;
 public class ResponseGenerator {
 
     public static ResponseEntity<String> successResponse(String body, String contentType) throws BadRequestException {
-    	
+    	if(contentType==null){
+    		contentType = "text/plain";
+    	}
     	RDFSerialization format = RDFSerialization.fromValue(contentType);
 //    	System.out.println(contentType);
 //   	System.out.println(format);
@@ -19,4 +21,5 @@ public class ResponseGenerator {
     	ResponseEntity<String> response = new ResponseEntity<String>(body, responseHeaders, HttpStatus.OK);
     	return response;
     }
+
 }
