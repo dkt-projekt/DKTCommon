@@ -396,6 +396,14 @@ public class NIFWriter {
         outModel.add(documentResource, DKTNIF.sentimentValue, outModel.createTypedLiteral(sentValue, XSDDatatype.XSDdouble));
 	}
 	
+	public static void addSentimentAnnotation(Model outModel, String inputText, String documentURI, double sentValue){
+		
+		int endTotalText = inputText.codePointCount(0, inputText.length());
+		String documentUri = new StringBuilder().append(documentURI).append("#char=").append("0").append(',').append(endTotalText).toString();
+        Resource documentResource = outModel.getResource(documentUri);
+        outModel.add(documentResource, DKTNIF.sentimentValue, outModel.createTypedLiteral(sentValue, XSDDatatype.XSDdouble));
+	}
+	
 	
 	public static void addDateStats(Model outModel, String inputText, String documentURI, String meanDateRange){
 		
