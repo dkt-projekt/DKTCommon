@@ -204,7 +204,7 @@ public class NIFReader {
 			Resource contextRes = iter.nextStatement().getSubject();
 			//System.out.println(contextRes.getURI());
 			String uri = contextRes.getURI();
-			String sEnd = uri.substring(uri.lastIndexOf(','));
+			String sEnd = uri.substring(uri.lastIndexOf(',')+1);
 			int i = Integer.parseInt(sEnd);
 			return i;
 		}
