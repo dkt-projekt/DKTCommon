@@ -69,6 +69,7 @@ public class DKTNIF {
 //    public static final Property dareRelationArgumentStartIndexPrefix = property("dfkiDareStartIndexArgument_");
 //    public static final Property dareRelationArgumentEndIndexPrefix = property("dfkiDareEndIndexArgument_");
 //    public static final Property dareRelationArgumentAnchorOfPrefix = property("dfkiDareAnchorOfArgument_");
+    public static final Property sentimentValue = property("sentimentValue"); //TODO: this is a dummy placeholder. Check with Felix for a proper name from a proper ontology for this!
     
     
     
