@@ -580,6 +580,32 @@ public class NIFReader {
 		return map;
 	}
 
+//	public static String extractSentimentValue(Model nifModel){
+//		Map<String,String> map = new HashMap<String,String>();
+//		
+//        ResIterator iterEntities = nifModel.listSubjectsWithProperty(RDF.type,"http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#Context");
+//        while (iterEntities.hasNext()) {
+//            Resource r = iterEntities.nextResource();
+//            StmtIterator iter2 = r.listProperties();
+//            while (iter2.hasNext()) {
+//				Statement st2 = iter2.next();
+//				String predicate =st2.getPredicate().getURI(); 
+//				String object = null;
+//				if(st2.getObject().isResource()){
+//					object = st2.getObject().asResource().getURI();
+//				}
+//				else{
+//					object = st2.getObject().asLiteral().getString();
+//				}
+//				map.put(predicate,object);
+//			}
+//        }
+//        if(map.isEmpty()){
+//        	return null;
+//        }
+//		return map;
+//	}
+
 	
 //	public static List<String[]> extractTempStats(Model nifModel){
 //		List<String[]> list = new LinkedList<String[]>();
