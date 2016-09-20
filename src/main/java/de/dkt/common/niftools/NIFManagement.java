@@ -167,10 +167,17 @@ public class NIFManagement {
 			Resource sub = node.asResource();
 //			System.out.println("-------Subject------- "+sub.getURI());
 			StmtIterator iter = sub.listProperties();
+			documentModel.add(iter);
+			
+			ResIterator resIt = collectionModel.listSubjectsWithProperty(NIF.referenceContext, node);
+			while(resIt.hasNext()){
+				Resource res = resIt.next();
+				StmtIterator iter2 = res.listProperties();
+				documentModel.add(iter2);
+			}
 //			System.out.println("-------iter------- "+iter.next().getSubject().getURI());
 //			System.out.println("-------iter------- "+iter.next().getPredicate().getURI());
 //			System.out.println("-------iter------- "+iter.next().getObject().toString());
-			documentModel.add(iter);
 //			System.out.println(documentModel.size());
 			documents.add(documentModel);
 		}

@@ -277,20 +277,21 @@ public class NIFReader {
 	
 	public static List<String[]> extractEntities(Model nifModel){
 		List<String[]> list = new LinkedList<String[]>();
-				
         //ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
 		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
         while (iterEntities.hasNext()) {
+//        	System.out.println("--");
             Resource r = iterEntities.nextResource();
             //Statement st = r.getProperty(NIF.entity);
             Statement st = r.getProperty(ITSRDF.taClassRef);
             String stringSt = ( st!=null ) ? st.getObject().asResource().getURI() : null;
-//            System.out.println("1."+st.getObject().asResource().getURI());
+//            System.out.println("1."+stringSt);
             Statement st2 = r.getProperty(NIF.anchorOf);
             String stringSt2 = ( st2!=null ) ? st2.getLiteral().getString() : null;
-//            System.out.println("7."+st2.getLiteral().getString());
+//            System.out.println("7."+stringSt2);
             Statement st3 = r.getProperty(ITSRDF.taIdentRef);
             String stringSt3 = ( st3!=null ) ? st3.getObject().asResource().getURI() : null;
+//            System.out.println("17."+stringSt3);
             String[] information = {stringSt3,stringSt2,stringSt};
             list.add(information);
         }
@@ -530,6 +531,32 @@ public class NIFReader {
         }
 		return map;
 	}
+
+//	public static String extractSentimentValue(Model nifModel){
+//		Map<String,String> map = new HashMap<String,String>();
+//		
+//        ResIterator iterEntities = nifModel.listSubjectsWithProperty(RDF.type,"http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#Context");
+//        while (iterEntities.hasNext()) {
+//            Resource r = iterEntities.nextResource();
+//            StmtIterator iter2 = r.listProperties();
+//            while (iter2.hasNext()) {
+//				Statement st2 = iter2.next();
+//				String predicate =st2.getPredicate().getURI(); 
+//				String object = null;
+//				if(st2.getObject().isResource()){
+//					object = st2.getObject().asResource().getURI();
+//				}
+//				else{
+//					object = st2.getObject().asLiteral().getString();
+//				}
+//				map.put(predicate,object);
+//			}
+//        }
+//        if(map.isEmpty()){
+//        	return null;
+//        }
+//		return map;
+//	}
 
 	
 //	public static List<String[]> extractTempStats(Model nifModel){
