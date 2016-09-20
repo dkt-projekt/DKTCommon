@@ -50,6 +50,7 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
+		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
         
 	}
@@ -69,6 +70,7 @@ public class NIFWriter {
 		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource(taIdentRef));
 		//outModel.add(spanAsResource, NIF.entity, outModel.createResource(nerType));
         outModel.add(spanAsResource, ITSRDF.taClassRef, nerType);
+        outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
         
 	}
 	
@@ -102,6 +104,7 @@ public class NIFWriter {
 		outModel.add(spanAsResource, TIME.intervalStarts, outModel.createTypedLiteral(intervalStart, XSDDatatype.XSDdateTime));
 		outModel.add(spanAsResource, TIME.intervalFinishes, outModel.createTypedLiteral(intervalEnd, XSDDatatype.XSDdateTime));
         outModel.add(spanAsResource, ITSRDF.taClassRef, TIME.temporalEntity);
+        outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
         
 	}
 
@@ -115,6 +118,7 @@ public class NIFWriter {
 		outModel.add(paragraphAsResource, RDF.type, NIF.RFC5147String);
 		outModel.add(paragraphAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(paragraphAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		
 		
 	}
 
@@ -227,6 +231,7 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, DKTNIF.dareRelationType, outModel.createTypedLiteral(relationType, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
 		
 		for (String argumentName : arguments.keySet()){
 			//outModel.add(spanAsResource, DKTNIF.dareRelationArgumentName, outModel.createTypedLiteral(argumentName, XSDDatatype.XSDstring));
