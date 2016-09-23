@@ -389,7 +389,10 @@ public class NIFReader {
 			Statement stRefAnchor = referee.getProperty(NIF.anchorOf);
 			String stRefAnchorString = ( stRefAnchor!=null ) ? stRefAnchor.getLiteral().getString() : null;
 			Statement stRefTaIdentRef = referee.getProperty(ITSRDF.taIdentRef);
-			String stRefTaIdentRefString = stRefTaIdentRef.getObject().toString();
+			String stRefTaIdentRefString = null;
+			if (stRefTaIdentRef != null){
+				stRefTaIdentRefString = stRefTaIdentRef.getObject().toString();
+			}
 			Statement stRefClassRef = referee.getProperty(ITSRDF.taClassRef);
 			String stRefClassRefString = stRefClassRef.getObject().toString();
             Statement st4 = r.getProperty(NIF.beginIndex);
