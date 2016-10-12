@@ -189,7 +189,6 @@ public class FileFactory {
 			return f;
 		}
 		catch(Exception e){
-			
 			//Parent folder
 			String parentPath;
 			if(path.endsWith(File.separator)){
@@ -202,11 +201,11 @@ public class FileFactory {
 				parentPath = ".";
 			}
 			
-			if(path.startsWith("http")){
+			if(path.startsWith("http:")){
 				//TODO HTTP file generation not implemented yet.
 				throw new IOException("HTTP file generation not available yet.");
 			}
-			else if(path.startsWith("ftp")){
+			else if(path.startsWith("ftp:")){
 				//TODO FTP file generation not implemented yet.
 				throw new IOException("FTP file generation not available yet.");
 			}
@@ -234,7 +233,7 @@ public class FileFactory {
 						throw new IOException("Unable to generate directory: "+newFile.getAbsolutePath());
 					}
 				}
-				else{
+				else{					
 					FileSystemResource fsr = new FileSystemResource(parentPath);
 					if(fsr!=null && fsr.exists()){
 						File newFile = new File(fsr.getFile(),path.substring(path.lastIndexOf(File.separator)));
