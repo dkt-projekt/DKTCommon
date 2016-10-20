@@ -1,2 +1,2 @@
 # DKTCommon
-Common classes for the DKT project.
+Common classes for the DKT project..
