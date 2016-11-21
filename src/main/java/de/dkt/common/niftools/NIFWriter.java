@@ -177,7 +177,7 @@ public class NIFWriter {
 	}
 	
 	
-	public static void addCoreferenceAnnotation(Model outModel, int startIndex, int endIndex, String text, String sameAsEntityURI){
+	public static void addCoreferenceAnnotation(Model outModel, int startIndex, int endIndex, String text, String sameAsEntityURI, String sameAsEntityTaIdentRef){
 		
 		String docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
@@ -196,6 +196,9 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
 		outModel.add(spanAsResource, OWL.sameAs, outModel.createTypedLiteral(sameAsEntityURI, XSDDatatype.XSDstring));
+		if (sameAsEntityTaIdentRef != null){
+			outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createTypedLiteral(sameAsEntityTaIdentRef, XSDDatatype.XSDstring));
+		}
 		
 	}
 
