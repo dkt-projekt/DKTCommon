@@ -121,6 +121,20 @@ public class NIFWriter {
 		
 		
 	}
+	
+	public static void addSentenceSentimentAnnotation(Model outModel, int startIndex, int endIndex, double sentVal){
+		String docURI = NIFReader.extractDocumentURI(outModel);
+		docURI = NIFReader.extractDocumentURI(outModel);
+		String sentenceUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource sentenceAsResource = outModel.createResource(sentenceUri);
+		outModel.add(sentenceAsResource, RDF.type, NIF.String);
+		outModel.add(sentenceAsResource, RDF.type, NIF.RFC5147String);
+		outModel.add(sentenceAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(sentenceAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(sentenceAsResource, DKTNIF.sentimentValue, outModel.createTypedLiteral(sentVal, XSDDatatype.XSDdouble));
+		
+	}
 
 	public static void addPosTagAnnotation(Model outModel, int startIndex, int endIndex, String text, String posTag){
 		String docURI = NIFReader.extractDocumentURI(outModel);
