@@ -137,6 +137,7 @@ public class FileFactory {
 			//The rest of the possibilities: classpath, filesystem or network storage
 			ClassPathResource cpr = new ClassPathResource(parentPath);
 			if(cpr!=null && cpr.exists()){
+				System.out.println("Parent File exists");
 //					System.out.println(path.substring(path.lastIndexOf(File.separator)));
 				File newFile = new File(cpr.getFile(),path.substring(path.lastIndexOf(File.separator)));
 				if(newFile.createNewFile()){

@@ -71,6 +71,13 @@ public class DKTNIF {
 //    public static final Property dareRelationArgumentAnchorOfPrefix = property("dfkiDareAnchorOfArgument_");
     public static final Property sentimentValue = property("sentimentValue"); //TODO: this is a dummy placeholder. Check with Felix for a proper name from a proper ontology for this!    
     
+    public static final Resource Event = resource("Event");
+    public static final Property eventSubject = property("eventSubject");
+    public static final Property eventPredicate = property("eventPredicate");
+    public static final Property eventObject = property("eventObject");
+    public static final Property eventTimestamp = property("eventTimestamp");
+    public static final Property eventRelevance = property("eventRelevance");
+    
     public static String createDocumentURI(){
     	return defaultPrefix+"doc"+((int)(Math.random()*9000)+1000);
     }
