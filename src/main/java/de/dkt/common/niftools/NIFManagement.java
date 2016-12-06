@@ -281,6 +281,14 @@ public class NIFManagement {
 		}
 		return obj;		
 	}
+
+	public static Model createCollectionFromDocuments(String prefix, List<Model> list) {
+		Model m = createDefaultCollectionModel(prefix);
+		for (Model model : list) {
+			addDocumentToCollection(m, model);
+		}
+		return m;		
+	}
 	
 	public static List<HashMap<String, String>> extractAnnotationUnits(Model model, String uri){
 		List<HashMap<String, String>> list = new LinkedList<HashMap<String,String>>();
