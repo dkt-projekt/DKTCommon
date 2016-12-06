@@ -12,7 +12,7 @@ public class InteractionManagement {
 	public static boolean sendInteraction(String user, String interactionType, String objectId, String value, 
 			String relevanceValue, String errorId, String errorType,String additionalInformation){
 		try{
-			HttpResponse<String> response = Unirest.post("http://dev.digitale-kuratierung.de/api/e-logging/storeInteractionInformation")
+			HttpResponse<String> response = Unirest.post("https://dev.digitale-kuratierung.de/api/e-logging/storeInteractionInformation")
 					.queryString("serviceType", "database")
 					.queryString("feedbackServiceName", "serviceName")
 					.queryString("create", false)
