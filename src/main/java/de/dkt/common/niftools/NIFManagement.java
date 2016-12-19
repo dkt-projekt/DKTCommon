@@ -43,9 +43,9 @@ public class NIFManagement {
 		br.close();
 		
 		Model m = NIFReader.extractModelFromFormatString(content, RDFSerialization.N3);
-		System.out.println(m.size());
+//		System.out.println(m.size());
 		List<Model> documents = NIFManagement.extractDocumentsModels(m);
-		System.out.println(documents.size());
+//		System.out.println(documents.size());
 		
 //		m = NIFReader.extractModelFromFormatString(content, RDFSerialization.TURTLE);
 //		System.out.println(m.size());

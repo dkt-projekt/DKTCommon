@@ -23,4 +23,5 @@ public class DBO {
     public static final Property location = property("Location");
     public static final Property organisation = property("Organisation");
 	
+    public static final Property action = property("Action");
 }
