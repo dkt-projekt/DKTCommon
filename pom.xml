@@ -108,14 +108,14 @@
 			</releases>
 		</repository>
 		  <repository>
-		    <id>maven-new-server</id>
+		    <id>maven-new-server-releases</id>
 		    <url>https://dev.digitale-kuratierung.de/nexus/repository/maven-releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		  </repository>
 		  <repository>
-		    <id>maven-new-server</id>
+		    <id>maven-new-server-snapshots</id>
     		<url>https://dev.digitale-kuratierung.de/nexus/repository/maven-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
