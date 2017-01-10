@@ -3,6 +3,8 @@
   <artifactId>DKTCommon</artifactId>
   <version>0.4.5-SNAPSHOT</version>
   
+
+
   <properties>
 		<!-- Generic properties -->
 		<java.version>1.8</java.version>
@@ -140,6 +142,6 @@
 		<connection>scm:git:git@github.com:dkt-projekt/DKTCommon.git</connection>
 		<url>scm:git:git@github.com/dkt-projekt/DKTCommon.git</url>
 		<developerConnection>scm:git:git@github.com:dkt-projekt/DKTCommon.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>DKTCommon-0.4.5</tag>
 	</scm>
 </project>
