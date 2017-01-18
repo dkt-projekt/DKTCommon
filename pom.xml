@@ -11,16 +11,15 @@
 	</properties>
 	
   <parent>
-  	<groupId>eu.freme.e-services</groupId>
-  	<artifactId>e-service-parent</artifactId>
-  	<version>0.1</version>
+		<groupId>eu.freme-project</groupId>
+		<artifactId>freme-parent</artifactId>
+		<version>0.17</version>
   </parent>
 
 	<dependencies>
 	<dependency>
-  		<groupId>eu.freme.bservices</groupId>
+  		<groupId>eu.freme-project.bservices</groupId>
   		<artifactId>test-helper</artifactId>
-  		<version>0.1</version>
   	</dependency>
 	
 	<dependency>
@@ -91,7 +90,7 @@
         </pluginManagement>
     </build>
   	<repositories>
-		<repository>
+<!-- 		<repository>
 			<id>freme-release</id>
 			<name>freme-nexus</name>
 			<url>http://rv1443.1blu.de/nexus/content/repositories/releases/</url>
@@ -106,7 +105,7 @@
 			<releases>
 				<enabled>false</enabled>
 			</releases>
-		</repository>
+		</repository> -->
 		  <repository>
 		    <id>maven-new-server-releases</id>
 		    <url>https://dev.digitale-kuratierung.de/nexus/repository/maven-releases/</url>
@@ -115,7 +114,7 @@
 			</snapshots>
 		  </repository>
 		  <repository>
-		    <id>maven-new-server-snapshots</id>
+		    <id>maven-new-server</id>
     		<url>https://dev.digitale-kuratierung.de/nexus/repository/maven-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
@@ -124,7 +123,7 @@
 	</repositories>
 	<distributionManagement>
 		<repository>
-			<id>maven-new-server</id>
+			<id>maven-new-server-releases</id>
 <!-- 			<url>http://v35731.1blu.de:8081/nexus/content/repositories/releases</url> -->
 			<url>https://dev.digitale-kuratierung.de/nexus/repository/maven-releases/</url>
 		</repository>
