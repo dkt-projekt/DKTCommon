@@ -73,6 +73,8 @@ public class NIF {
     public static final Property relationSubject = property("relationSubject");
     public static final Property relationAction = property("relationAction");
     public static final Property relationObject = property("relationObject");
+    public static final Property thematicRoleSubj = property("thematicRoleSubject");
+    public static final Property thematicRoleObj = property("thematicRoleObject");
 
     public static final Property translation = property("translation");
     public static final Property summary = property("summary");

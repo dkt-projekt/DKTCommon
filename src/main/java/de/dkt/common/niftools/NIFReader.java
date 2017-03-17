@@ -367,7 +367,8 @@ public class NIFReader {
             String stringSt4 = ( st4!=null ) ? st4.getLiteral().getString() : null;
             Statement st5 = r.getProperty(NIF.endIndex);
             String stringSt5 = ( st5!=null ) ? st5.getLiteral().getString() : null;
-            String[] information = {stringSt3,stringSt2,stringSt,stringSt4,stringSt5};
+            String entityURI = r.getURI();
+            String[] information = {stringSt3,stringSt2,stringSt,stringSt4,stringSt5, entityURI};
             list.add(information);
         }
         if(list.isEmpty()){
@@ -399,7 +400,9 @@ public class NIFReader {
             String stringSt4 = ( st4!=null ) ? st4.getLiteral().getString() : null;
             Statement st5 = r.getProperty(NIF.endIndex);
             String stringSt5 = ( st5!=null ) ? st5.getLiteral().getString() : null;
-            String[] information = {stRefTaIdentRefString,stRefAnchorString,stRefClassRefString,stringSt4,stringSt5};
+            Statement st6 = r.getProperty(OWL.sameAs);
+            String entityURI = st6.getLiteral().getString();
+            String[] information = {stRefTaIdentRefString,stRefAnchorString,stRefClassRefString,stringSt4,stringSt5, entityURI};
             list.add(information);
         }
         if(list.isEmpty()){

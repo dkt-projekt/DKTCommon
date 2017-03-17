@@ -216,7 +216,7 @@ public class NIFWriter {
 		
 	}
 
-	public static void addAnnotationRelation(Model outModel, int startIndex, int endIndex, String text, String sub, String act, String obj){
+	public static void addAnnotationRelation(Model outModel, int startIndex, int endIndex, String text, String sub, String act, String obj, String thematicRoleSubj, String thematicRoleObj){
 		String docURI = NIFReader.extractDocumentURI(outModel);
 		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
@@ -234,6 +234,12 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.relationSubject, outModel.createResource(sub));
 		outModel.add(spanAsResource, NIF.relationAction, outModel.createResource(act));
 		outModel.add(spanAsResource, NIF.relationObject, outModel.createResource(obj));
+		if (thematicRoleSubj != null){
+			outModel.add(spanAsResource, NIF.thematicRoleSubj, outModel.createResource(thematicRoleSubj));
+		}
+		if (thematicRoleObj != null){
+			outModel.add(spanAsResource, NIF.thematicRoleObj, outModel.createResource(thematicRoleObj));
+		}
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
 	}
 	
