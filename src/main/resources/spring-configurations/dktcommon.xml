@@ -7,7 +7,7 @@
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:component-scan base-package="de.dkt.common.authentication" />
+	<context:component-scan base-package="de.dkt.common.feedback" />
 
 <!--  	<bean id="feedbackDAO" class="de.dkt.eservices.efeedback.modules.ddbb.FeedbackInformationJDBCTemplate">
         <property name="dataSource" ref="dataSource" />

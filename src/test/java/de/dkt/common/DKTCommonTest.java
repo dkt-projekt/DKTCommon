@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import de.dkt.common.authentication.UserAuthentication;
+import de.dkt.common.feedback.InteractionManagement;
 import de.dkt.common.filemanagement.FileFactory;
 import eu.freme.bservices.testhelper.TestHelper;
 import eu.freme.bservices.testhelper.ValidationHelper;
@@ -23,6 +24,7 @@ public class DKTCommonTest {
 
 	TestHelper testHelper;
 	ValidationHelper validationHelper;
+	InteractionManagement im;
 //	UserAuthentication userAuth;
 
 	@Before
@@ -31,12 +33,17 @@ public class DKTCommonTest {
 				.getContext(TestConstants.pathToPackage);
 		testHelper = context.getBean(TestHelper.class);
 		validationHelper = context.getBean(ValidationHelper.class);
+//		im = context.getBean(InteractionManagement.class);
 //		userAuth = context.getBean(UserAuthentication.class);
+//		InteractionManagement.printAddress();
 	}
 
 	
 	@Test
 	public void testSanityCheck() throws IOException,Exception {
+		
+//		System.out.println(im.serverAddress);
+		
 	}
 	
 	/**
