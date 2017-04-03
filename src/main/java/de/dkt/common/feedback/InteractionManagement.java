@@ -5,21 +5,26 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Component;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
+@PropertySource("classpath:application.properties")
 @Component
 public class InteractionManagement {
 
+	
 	public static Logger logger = Logger.getLogger(InteractionManagement.class);
 
 //	private static String serverAddress;
 
 	private static String serverAddress;
+	
 
-    @Autowired
+	@Autowired
     public InteractionManagement(@Value("${dkt.feedback.serveraddress}") String serverAddress) {
         InteractionManagement.serverAddress = serverAddress;
     }	
