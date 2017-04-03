@@ -21,7 +21,7 @@ public class InteractionManagement {
 
     @Autowired
     public InteractionManagement(@Value("${dkt.feedback.serveraddress}") String serverAddress) {
-        this.serverAddress = serverAddress;
+        InteractionManagement.serverAddress = serverAddress;
     }	
 	
 	/*************************/ //PB: trying to fix broker not starting on dev. Re-instate the stuff below if doesn't work.
