@@ -12,41 +12,31 @@ import org.springframework.stereotype.Component;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-@PropertySource("classpath:application.properties")
+
 @Component
 public class InteractionManagement {
 
 	
 	public static Logger logger = Logger.getLogger(InteractionManagement.class);
-
-//	private static String serverAddress;
-
 	private static String serverAddress;
 	
+	@Value("${dkt.feedback.serveraddress}")
+	private String serverAddress2;
+//static String serverAddress = "https://dev.digitale-kuratierung.de/api/e-logging/storeInteractionInformation";
 
-	@Autowired
-    public InteractionManagement(@Value("${dkt.feedback.serveraddress}") String serverAddress) {
-        InteractionManagement.serverAddress = serverAddress;
-    }	
+	public InteractionManagement() {
+		
+	}
 	
-	/*************************/ //PB: trying to fix broker not starting on dev. Re-instate the stuff below if doesn't work.
-//	@Value("${dkt.feedback.serveraddress}")
-//	private String serverAddress2;
-////static String serverAddress = "https://dev.digitale-kuratierung.de/api/e-logging/storeInteractionInformation";
-//
-//	public InteractionManagement() {
-//		
-//	}
-//	
-//	@PostConstruct
-//	public void init(){
-//		InteractionManagement.serverAddress = serverAddress2;
-//	}
-//	
-//	public static void printAddress(){
-//		System.out.println(serverAddress);
-//	}
-	/****************************/
+	@PostConstruct
+	public void init(){
+		InteractionManagement.serverAddress = serverAddress2;
+	}
+	
+	public static void printAddress(){
+		System.out.println(serverAddress);
+	}
+
 	public static boolean sendInteraction(String user, String interactionType, String objectId, String value, 
 			String relevanceValue, String errorId, String errorType,String additionalInformation){
 		try{
