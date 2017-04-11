@@ -423,6 +423,41 @@ public class NIFReader {
 		return taIdentRef;
 	}
 	
+	public static Map<String,Map<String,String>> extractEventsExtended(Model nifModel){
+		Map<String,Map<String,String>> list = new HashMap<String,Map<String,String>>();
+
+		//TODO Define how wvents are going to be extracted from NIF (and indeed, annotated in NIF).
+		
+        //ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
+        while (iterEntities.hasNext()) {
+    		Map<String,String> map = new HashMap<String,String>();
+            Resource r = iterEntities.nextResource();
+
+            String entityURI = r.getURI();
+            
+            StmtIterator iter2 = r.listProperties();
+            while (iter2.hasNext()) {
+				Statement st2 = iter2.next();
+				String predicate =st2.getPredicate().getURI(); 
+				String object = null;
+				if(st2.getObject().isResource()){
+					object = st2.getObject().asResource().getURI();
+				}
+				else{
+					object = st2.getObject().asLiteral().getString();
+				}
+				map.put(predicate,object);
+			}
+            if(!map.isEmpty()){
+                list.put(entityURI,map);
+            }
+        }
+        if(list.isEmpty()){
+        	return null;
+        }
+		return list;
+	}
 
 	public static Map<String,Map<String,String>> extractEntitiesExtended(Model nifModel){
 		Map<String,Map<String,String>> list = new HashMap<String,Map<String,String>>();

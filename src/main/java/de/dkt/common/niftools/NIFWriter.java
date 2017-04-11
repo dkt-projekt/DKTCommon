@@ -99,8 +99,34 @@ public class NIFWriter {
 		
 		// convert normalization to xsd:dateTime notation
 		String[] norm = normalization.split("_");
+		System.out.println("D1: "+norm[0]);
+		System.out.println("D2: "+stringDateXSDDateTimeFormatter(norm[0]));
 		String intervalStart = stringDateXSDDateTimeFormatter(norm[0]);
 		String intervalEnd = stringDateXSDDateTimeFormatter(norm[1]);
+		outModel.add(spanAsResource, TIME.intervalStarts, outModel.createTypedLiteral(intervalStart, XSDDatatype.XSDdateTime));
+		outModel.add(spanAsResource, TIME.intervalFinishes, outModel.createTypedLiteral(intervalEnd, XSDDatatype.XSDdateTime));
+        outModel.add(spanAsResource, ITSRDF.taClassRef, TIME.temporalEntity);
+        outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
+        
+	}
+
+	public static void addTemporalEntityFromTimeML(Model outModel, int startIndex, int endIndex, String text, String normalization){
+		String docURI = NIFReader.extractDocumentURI(outModel);
+		docURI = NIFReader.extractDocumentURI(outModel);
+		String spanUri = new StringBuilder().append(docURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource spanAsResource = outModel.createResource(spanUri);
+		outModel.add(spanAsResource, RDF.type, NIF.String);
+		outModel.add(spanAsResource, RDF.type, NIF.RFC5147String);
+		
+		outModel.add(spanAsResource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(spanAsResource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+		
+		// convert normalization to xsd:dateTime notation
+		String[] norm = normalization.split("_");
+		String intervalStart = norm[0];
+		String intervalEnd = norm[1];
 		outModel.add(spanAsResource, TIME.intervalStarts, outModel.createTypedLiteral(intervalStart, XSDDatatype.XSDdateTime));
 		outModel.add(spanAsResource, TIME.intervalFinishes, outModel.createTypedLiteral(intervalEnd, XSDDatatype.XSDdateTime));
         outModel.add(spanAsResource, ITSRDF.taClassRef, TIME.temporalEntity);
