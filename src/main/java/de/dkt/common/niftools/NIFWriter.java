@@ -1,5 +1,8 @@
 package de.dkt.common.niftools;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -257,14 +260,24 @@ public class NIFWriter {
 		outModel.add(spanAsResource, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
 //		outModel.add(spanAsResource, NIF.referenceContext, outModel.createTypedLiteral("ReferenceContextDummy", XSDDatatype.XSDstring));
 		outModel.add(spanAsResource, ITSRDF.taIdentRef, outModel.createResource("http://dkt.dfki.de/entities/relation"));
-		outModel.add(spanAsResource, NIF.relationSubject, outModel.createResource(sub));
-		outModel.add(spanAsResource, NIF.relationAction, outModel.createResource(act));
-		outModel.add(spanAsResource, NIF.relationObject, outModel.createResource(obj));
+		
+//		outModel.add(spanAsResource, NIF.relationSubject, outModel.createResource(sub));
+//		outModel.add(spanAsResource, NIF.relationAction, outModel.createResource(act));
+//		outModel.add(spanAsResource, NIF.relationObject, outModel.createResource(obj));
+//		if (thematicRoleSubj != null){
+//			outModel.add(spanAsResource, NIF.thematicRoleSubj, outModel.createResource(thematicRoleSubj));
+//		}
+//		if (thematicRoleObj != null){
+//			outModel.add(spanAsResource, NIF.thematicRoleObj, outModel.createResource(thematicRoleObj));
+//		}
+		outModel.add(spanAsResource, NIF.relationSubject, outModel.createTypedLiteral(sub,XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.relationAction, outModel.createTypedLiteral(act,XSDDatatype.XSDstring));
+		outModel.add(spanAsResource, NIF.relationObject, outModel.createTypedLiteral(obj,XSDDatatype.XSDstring));
 		if (thematicRoleSubj != null){
-			outModel.add(spanAsResource, NIF.thematicRoleSubj, outModel.createResource(thematicRoleSubj));
+			outModel.add(spanAsResource, NIF.thematicRoleSubj, outModel.createTypedLiteral(thematicRoleSubj,XSDDatatype.XSDstring));
 		}
 		if (thematicRoleObj != null){
-			outModel.add(spanAsResource, NIF.thematicRoleObj, outModel.createResource(thematicRoleObj));
+			outModel.add(spanAsResource, NIF.thematicRoleObj, outModel.createTypedLiteral(thematicRoleObj,XSDDatatype.XSDstring));
 		}
         //outModel.add(spanAsResource, ITSRDF.taClassRef, outModel.createResource("http://dkt.dfki.de/entities/location"));
 	}
@@ -556,5 +569,23 @@ public class NIFWriter {
 	public static void addBabelnetAnnotation(Model outModel, String documentURI, String sense, String language){
 		Resource resource = outModel.getResource(documentURI);
         outModel.add(resource, DKTNIF.babelnetSense, sense+"@"+language);
+	}
+	
+	public static void addSextupleMAEAnnotation(Model outModel, String documentURI, String person, String origin,
+			String destination, Date dTime, Date aTime, String travelMode, int startIndex, int endIndex){
+		
+		String spanUri = new StringBuilder().append(documentURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+
+		Resource resource = outModel.getResource(spanUri);
+		outModel.add(resource, RDF.type, DKTNIF.MovementActionEvent);
+		outModel.add(resource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(resource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+        outModel.add(resource, DKTNIF.maePerson, outModel.createTypedLiteral(person, XSDDatatype.XSDstring));
+        outModel.add(resource, DKTNIF.maeOrigin, outModel.createTypedLiteral(origin, XSDDatatype.XSDstring));
+        outModel.add(resource, DKTNIF.maeDestination, outModel.createTypedLiteral(destination, XSDDatatype.XSDstring));
+        DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		outModel.add(resource, DKTNIF.maeDepartureTime, outModel.createTypedLiteral(df.format(dTime), XSDDatatype.XSDdateTime));
+		outModel.add(resource, DKTNIF.maeArrivalTime, outModel.createTypedLiteral(df.format(aTime), XSDDatatype.XSDdateTime));
+        outModel.add(resource, DKTNIF.maeTravelMode, outModel.createTypedLiteral(travelMode, XSDDatatype.XSDstring));
 	}
 }

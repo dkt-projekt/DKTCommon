@@ -78,6 +78,15 @@ public class DKTNIF {
     public static final Property eventTimestamp = property("eventTimestamp");
     public static final Property eventRelevance = property("eventRelevance");
     
+    public static final Resource MovementActionEvent = resource("MovementActionEvent");
+    public static final Property maePerson = property("maePerson");
+    public static final Property maeOrigin = property("maeOrigin");
+    public static final Property maeDestination = property("maeDestination");
+    public static final Property maeDepartureTime = property("maeDepartureTime");
+    public static final Property maeArrivalTime = property("maeArrivalTime");
+    public static final Property maeTravelMode = property("maeTravelMode");
+    
+    
     public static String createDocumentURI(){
     	return defaultPrefix+"doc"+((int)(Math.random()*9000)+1000);
     }
