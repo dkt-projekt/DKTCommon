@@ -704,4 +704,40 @@ public class NIFReader {
 		return outModel;
 	}
 
+	public static Map<String,DktAnnotation> extractAnnotations(Model nifModel){
+		Map<String,DktAnnotation> list = new HashMap<String,DktAnnotation>();
+				
+        //ResIterator iterEntities = nifModel.listSubjectsWithProperty(NIF.entity);
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(ITSRDF.taClassRef);
+        while (iterEntities.hasNext()) {
+        	Map<String,String> map = new HashMap<String,String>();
+            Resource r = iterEntities.nextResource();
+
+            String entityURI = r.getURI();
+            
+            StmtIterator iter2 = r.listProperties();
+            while (iter2.hasNext()) {
+				Statement st2 = iter2.next();
+				String predicate =st2.getPredicate().getURI(); 
+				String object = null;
+				if(st2.getObject().isResource()){
+					object = st2.getObject().asResource().getURI();
+				}
+				else{
+					object = st2.getObject().asLiteral().getString();
+				}
+				map.put(predicate,object);
+			}
+            if(!map.isEmpty()){
+        		DktAnnotation annotation = new DktAnnotation(entityURI,map);
+                list.put(entityURI,annotation);
+            }
+        }
+        if(list.isEmpty()){
+        	return null;
+        }
+		return list;
+	}
+
+
 }

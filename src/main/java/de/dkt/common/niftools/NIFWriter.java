@@ -570,9 +570,9 @@ public class NIFWriter {
 		Resource resource = outModel.getResource(documentURI);
         outModel.add(resource, DKTNIF.babelnetSense, sense+"@"+language);
 	}
-	
+
 	public static void addSextupleMAEAnnotation(Model outModel, String documentURI, String person, String origin,
-			String destination, Date dTime, Date aTime, String travelMode, int startIndex, int endIndex){
+			String destination, Date dTime, Date aTime, String travelMode, int startIndex, int endIndex, String text, float score){
 		
 		String spanUri = new StringBuilder().append(documentURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
 
@@ -580,12 +580,46 @@ public class NIFWriter {
 		outModel.add(resource, RDF.type, DKTNIF.MovementActionEvent);
 		outModel.add(resource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
 		outModel.add(resource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
-        outModel.add(resource, DKTNIF.maePerson, outModel.createTypedLiteral(person, XSDDatatype.XSDstring));
-        outModel.add(resource, DKTNIF.maeOrigin, outModel.createTypedLiteral(origin, XSDDatatype.XSDstring));
-        outModel.add(resource, DKTNIF.maeDestination, outModel.createTypedLiteral(destination, XSDDatatype.XSDstring));
+		if(person!=null){
+			outModel.add(resource, DKTNIF.maePerson, outModel.createTypedLiteral(person, XSDDatatype.XSDstring));
+		}
+		if(origin!=null){
+			outModel.add(resource, DKTNIF.maeOrigin, outModel.createTypedLiteral(origin, XSDDatatype.XSDstring));
+		}
+		if(destination!=null){
+			outModel.add(resource, DKTNIF.maeDestination, outModel.createTypedLiteral(destination, XSDDatatype.XSDstring));
+		}
         DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-		outModel.add(resource, DKTNIF.maeDepartureTime, outModel.createTypedLiteral(df.format(dTime), XSDDatatype.XSDdateTime));
-		outModel.add(resource, DKTNIF.maeArrivalTime, outModel.createTypedLiteral(df.format(aTime), XSDDatatype.XSDdateTime));
-        outModel.add(resource, DKTNIF.maeTravelMode, outModel.createTypedLiteral(travelMode, XSDDatatype.XSDstring));
+		if(dTime!=null){
+			outModel.add(resource, DKTNIF.maeDepartureTime, outModel.createTypedLiteral(df.format(dTime), XSDDatatype.XSDdateTime));
+		}
+		if(aTime!=null){
+			outModel.add(resource, DKTNIF.maeArrivalTime, outModel.createTypedLiteral(df.format(aTime), XSDDatatype.XSDdateTime));
+		}
+		if(travelMode!=null){
+			outModel.add(resource, DKTNIF.maeTravelMode, outModel.createTypedLiteral(travelMode, XSDDatatype.XSDstring));
+		}
+		if(text!=null){
+			outModel.add(resource, NIF.anchorOf, outModel.createTypedLiteral(text, XSDDatatype.XSDstring));
+		}
+		outModel.add(resource, DKTNIF.maeScore, outModel.createTypedLiteral(score, XSDDatatype.XSDfloat));
+	}
+
+	public static void addMAETransportationMode(Model outModel, String documentURI, String travelMode, int startIndex, int endIndex){
+		
+		String spanUri = new StringBuilder().append(documentURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+		Resource resource = outModel.getResource(spanUri);
+		outModel.add(resource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(resource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+        outModel.add(resource, DKTNIF.travelMode, outModel.createTypedLiteral(travelMode, XSDDatatype.XSDstring));
+	}
+
+	public static void addMAEMovementVerb(Model outModel, String documentURI, String verb, int startIndex, int endIndex){
+		String spanUri = new StringBuilder().append(documentURI).append("#char=").append(startIndex).append(',').append(endIndex).toString();
+		Resource resource = outModel.getResource(spanUri);
+		outModel.add(resource, RDF.type, DKTNIF.MovementTrigger);
+		outModel.add(resource, NIF.beginIndex, outModel.createTypedLiteral(startIndex, XSDDatatype.XSDnonNegativeInteger));
+		outModel.add(resource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
+        outModel.add(resource, DKTNIF.movementVerb, outModel.createTypedLiteral(verb, XSDDatatype.XSDstring));
 	}
 }

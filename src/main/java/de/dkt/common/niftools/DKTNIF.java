@@ -85,7 +85,13 @@ public class DKTNIF {
     public static final Property maeDepartureTime = property("maeDepartureTime");
     public static final Property maeArrivalTime = property("maeArrivalTime");
     public static final Property maeTravelMode = property("maeTravelMode");
-    
+    public static final Property maeScore = property("maeScore");
+
+    public static final Resource MovementTrigger = resource("MovementTrigger");
+
+    public static final Property travelMode = property("travelMode");
+    public static final Property movementVerb = property("movementVerb");
+
     
     public static String createDocumentURI(){
     	return defaultPrefix+"doc"+((int)(Math.random()*9000)+1000);
