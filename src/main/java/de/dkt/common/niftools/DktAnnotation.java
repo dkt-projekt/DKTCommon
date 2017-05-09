@@ -44,6 +44,9 @@ public class DktAnnotation {
 		if(this.getType().equalsIgnoreCase("temp")){
 			return properties.get(TIME.intervalStarts.toString());
 		}
+		else if(this.getType().equalsIgnoreCase("mode")){
+			return properties.get(DKTNIF.travelMode.toString());
+		}
 		return properties.get(NIF.anchorOf.toString());
 	}
 	
@@ -56,31 +59,43 @@ public class DktAnnotation {
 		int i = Integer.parseInt(properties.get(NIF.endIndex.toString()));
 		return i;
 	}
-	
+
+	public boolean isEmpty(){
+		if(properties.isEmpty()){
+			return true;
+		}
+		return false;
+	}
 	public String getType(){
 		if(properties.isEmpty()){
 			return "empty";
 		}
 		String type = properties.get(RDF.type.toString());
 		String taClassRef = properties.get(ITSRDF.taClassRef.toString());
-		if(type!=null && type.equalsIgnoreCase(DKTNIF.movementVerb.toString())){
+		if(type!=null && type.equalsIgnoreCase(DKTNIF.MovementActionEvent.toString())){
+			return "mae";
+		}
+		else if(type!=null && type.equalsIgnoreCase(DKTNIF.MovementTrigger.toString())){
 			return "triggerVerb";
 		}
 		else if(type!=null && type.equalsIgnoreCase(DKTNIF.travelMode.toString())){
 			return "triggerTerm";
 		}
 		else{
-			if(taClassRef.equalsIgnoreCase(DBO.person.toString())){
+			if(taClassRef!=null && taClassRef.equalsIgnoreCase(DBO.person.toString())){
 				return "person";
 			}
-			else if(taClassRef.equalsIgnoreCase(DBO.location.toString())){
+			else if(taClassRef!=null && taClassRef.equalsIgnoreCase(DBO.location.toString())){
 				return "location";
 			}
-			else if(taClassRef.equalsIgnoreCase(DBO.organisation.toString())){
+			else if(taClassRef!=null && taClassRef.equalsIgnoreCase(DBO.organisation.toString())){
 				return "organization";
 			}
-			else if(taClassRef.equalsIgnoreCase(TIME.temporalEntity.toString())){
+			else if(taClassRef!=null && taClassRef.equalsIgnoreCase(TIME.temporalEntity.toString())){
 				return "temp";
+			}
+			else if(properties.containsKey(DKTNIF.travelMode.toString())){
+				return "mode";
 			}
 		}
 		return "";

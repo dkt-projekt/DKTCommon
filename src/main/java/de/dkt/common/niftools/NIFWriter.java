@@ -622,4 +622,41 @@ public class NIFWriter {
 		outModel.add(resource, NIF.endIndex, outModel.createTypedLiteral(endIndex, XSDDatatype.XSDnonNegativeInteger));
         outModel.add(resource, DKTNIF.movementVerb, outModel.createTypedLiteral(verb, XSDDatatype.XSDstring));
 	}
+	
+	public static void addMetaDataInformation(Model outModel, String documentURI, String author, String date, String location){
+		if(author!=null){
+			String spanUriAuthor = new StringBuilder().append(documentURI).append("#char=author").toString();
+			Resource resourceAuthor = outModel.getResource(spanUriAuthor);
+			outModel.add(resourceAuthor, RDF.type, NIF.String);
+			outModel.add(resourceAuthor, RDF.type, NIF.RFC5147String);
+			outModel.add(resourceAuthor, NIF.beginIndex, outModel.createTypedLiteral(0, XSDDatatype.XSDnonNegativeInteger));
+			outModel.add(resourceAuthor, NIF.endIndex, outModel.createTypedLiteral(0, XSDDatatype.XSDnonNegativeInteger));
+	        outModel.add(resourceAuthor, NIF.anchorOf, outModel.createTypedLiteral(author, XSDDatatype.XSDstring));
+	        outModel.add(resourceAuthor, ITSRDF.taClassRef, DBO.person);
+			outModel.add(resourceAuthor, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
+		}
+		if(date!=null){
+			String spanUriDate = new StringBuilder().append(documentURI).append("#char=date").toString();
+			Resource resourceDate = outModel.getResource(spanUriDate);
+			outModel.add(resourceDate, RDF.type, NIF.String);
+			outModel.add(resourceDate, RDF.type, NIF.RFC5147String);
+			outModel.add(resourceDate, NIF.beginIndex, outModel.createTypedLiteral(0, XSDDatatype.XSDnonNegativeInteger));
+			outModel.add(resourceDate, NIF.endIndex, outModel.createTypedLiteral(0, XSDDatatype.XSDnonNegativeInteger));
+	        outModel.add(resourceDate, NIF.anchorOf, outModel.createTypedLiteral(date, XSDDatatype.XSDstring));
+	        outModel.add(resourceDate, ITSRDF.taClassRef, TIME.temporalEntity);
+			outModel.add(resourceDate, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
+		}
+		if(location!=null){
+			String spanUriLocation = new StringBuilder().append(documentURI).append("#char=location").toString();
+			Resource resourceLocation = outModel.getResource(spanUriLocation);
+			outModel.add(resourceLocation, RDF.type, NIF.String);
+			outModel.add(resourceLocation, RDF.type, NIF.RFC5147String);
+			outModel.add(resourceLocation, NIF.beginIndex, outModel.createTypedLiteral(0, XSDDatatype.XSDnonNegativeInteger));
+			outModel.add(resourceLocation, NIF.endIndex, outModel.createTypedLiteral(0, XSDDatatype.XSDnonNegativeInteger));
+	        outModel.add(resourceLocation, NIF.anchorOf, outModel.createTypedLiteral(location, XSDDatatype.XSDstring));
+	        outModel.add(resourceLocation, ITSRDF.taClassRef, DBO.location);
+			outModel.add(resourceLocation, NIF.referenceContext, outModel.createResource(NIFReader.extractDocumentWholeURI(outModel)));
+		}
+	
+	}
 }

@@ -714,7 +714,53 @@ public class NIFReader {
             Resource r = iterEntities.nextResource();
 
             String entityURI = r.getURI();
-            
+//System.out.println(entityURI);            
+            StmtIterator iter2 = r.listProperties();
+            while (iter2.hasNext()) {
+				Statement st2 = iter2.next();
+				String predicate =st2.getPredicate().getURI(); 
+				String object = null;
+				if(st2.getObject().isResource()){
+					object = st2.getObject().asResource().getURI();
+				}
+				else{
+					object = st2.getObject().asLiteral().getString();
+				}
+				map.put(predicate,object);
+			}
+            if(!map.isEmpty()){
+        		DktAnnotation annotation = new DktAnnotation(entityURI,map);
+                list.put(entityURI,annotation);
+            }
+        }
+		ResIterator iterEntities2 = nifModel.listSubjectsWithProperty(RDF.type,DKTNIF.MovementTrigger);
+        while (iterEntities2.hasNext()) {
+        	Map<String,String> map = new HashMap<String,String>();
+            Resource r = iterEntities2.nextResource();
+            String entityURI = r.getURI();
+            StmtIterator iter2 = r.listProperties();
+            while (iter2.hasNext()) {
+				Statement st2 = iter2.next();
+				String predicate =st2.getPredicate().getURI(); 
+				String object = null;
+				if(st2.getObject().isResource()){
+					object = st2.getObject().asResource().getURI();
+				}
+				else{
+					object = st2.getObject().asLiteral().getString();
+				}
+				map.put(predicate,object);
+			}
+            if(!map.isEmpty()){
+        		DktAnnotation annotation = new DktAnnotation(entityURI,map);
+                list.put(entityURI,annotation);
+            }
+        }
+		ResIterator iterEntities3 = nifModel.listSubjectsWithProperty(DKTNIF.travelMode);
+        while (iterEntities3.hasNext()) {
+        	Map<String,String> map = new HashMap<String,String>();
+            Resource r = iterEntities3.nextResource();
+            String entityURI = r.getURI();
             StmtIterator iter2 = r.listProperties();
             while (iter2.hasNext()) {
 				Statement st2 = iter2.next();
@@ -739,5 +785,48 @@ public class NIFReader {
 		return list;
 	}
 
+	public static Map<String,Map<String,String>> extractMAEs(Model nifModel){
+		Map<String,Map<String,String>> list = new HashMap<String,Map<String,String>>();
+		ResIterator iterEntities = nifModel.listSubjectsWithProperty(RDF.type,DKTNIF.MovementActionEvent);
+        while (iterEntities.hasNext()) {
+    		Map<String,String> map = new HashMap<String,String>();
+            Resource r = iterEntities.nextResource();
+            String entityURI = r.getURI();
+            StmtIterator iter2 = r.listProperties();
+            while (iter2.hasNext()) {
+				Statement st2 = iter2.next();
+				String predicate =st2.getPredicate().getURI(); 
+				String object = null;
+				if(st2.getObject().isResource()){
+					object = st2.getObject().asResource().getURI();
+				}
+				else{
+					object = st2.getObject().asLiteral().getString();
+				}
+				map.put(predicate,object);
+			}
+            if(!map.isEmpty()){
+                list.put(entityURI,map);
+            }
+        }
+        if(list.isEmpty()){
+        	return null;
+        }
+		return list;
+	}
 
+	public static String[] extractMetaData(Model nifModel){
+		String [] data = new String[3];
+		String documentUri = extractDocumentWholeURI(nifModel);
+		Resource auth = nifModel.createResource(documentUri+"#char=author");
+		Resource loc = nifModel.createResource(documentUri+"#char=location");
+		Resource dat = nifModel.createResource(documentUri+"#char=date");
+		NodeIterator it1 = nifModel.listObjectsOfProperty(auth, NIF.anchorOf);
+		NodeIterator it2 = nifModel.listObjectsOfProperty(loc, NIF.anchorOf);
+		NodeIterator it3 = nifModel.listObjectsOfProperty(dat, NIF.anchorOf);
+		data[0] = it1.next().asLiteral().getString();
+		data[1] = it2.next().asLiteral().getString();
+		data[2] = it3.next().asLiteral().getString();
+		return data;
+	}
 }
